@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/classCue/static/css/main.98e115d0.css",
+    "main.js": "/classCue/static/js/main.48cefb42.js",
+    "index.html": "/classCue/index.html",
+    "main.98e115d0.css.map": "/classCue/static/css/main.98e115d0.css.map",
+    "main.48cefb42.js.map": "/classCue/static/js/main.48cefb42.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.98e115d0.css",
+    "static/js/main.48cefb42.js"
+  ]
+}

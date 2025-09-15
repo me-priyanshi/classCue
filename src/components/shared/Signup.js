@@ -231,45 +231,49 @@ const Signup = ({ onLoginClick }) => {
                 </button>
               </div>
             </div>
-            <div>
-              <label htmlFor="interests" className="block text-sm font-medium text-gray-700 mb-2">
-                Interests
-              </label>
-              <textarea
-                  id="interests"
-                  name="interests"
-                  value={formData.interests}
-                  onChange={handleInputChange}
-                  className="input-field pr-10"
-                  placeholder="Enter your interest areas"
-                />
-            </div>
-            <div>
-              <label htmlFor="skills" className="block text-sm font-medium text-gray-700 mb-2">
-                Skills
-              </label>
-              <textarea
-                  id="skills"
-                  name="skills"
-                  value={formData.skills}
-                  onChange={handleInputChange}
-                  className="input-field pr-10"
-                  placeholder="Enter your skills areas"
-                />
-            </div>
-            <div>
-              <label htmlFor="goals" className="block text-sm font-medium text-gray-700 mb-2">
-                Goals
-              </label>
-              <textarea
-                  id="goals"
-                  name="goals"
-                  value={formData.goals}
-                  onChange={handleInputChange}
-                  className="input-field pr-10"
-                  placeholder="Enter your goals"
-                />
-            </div>
+            {formData.role === 'student' ? (
+              <>
+                <div>
+                <label htmlFor="interests" className="block text-sm font-medium text-gray-700 mb-2">
+                  Interests
+                </label>
+                <textarea
+                    id="interests"
+                    name="interests"
+                    value={formData.interests}
+                    onChange={handleInputChange}
+                    className="input-field pr-10"
+                    placeholder="Enter your interest areas"
+                  />
+              </div>
+              <div>
+                <label htmlFor="skills" className="block text-sm font-medium text-gray-700 mb-2">
+                  Skills
+                </label>
+                <textarea
+                    id="skills"
+                    name="skills"
+                    value={formData.skills}
+                    onChange={handleInputChange}
+                    className="input-field pr-10"
+                    placeholder="Enter your skills areas"
+                  />
+              </div>
+              <div>
+                <label htmlFor="goals" className="block text-sm font-medium text-gray-700 mb-2">
+                  Goals
+                </label>
+                <textarea
+                    id="goals"
+                    name="goals"
+                    value={formData.goals}
+                    onChange={handleInputChange}
+                    className="input-field pr-10"
+                    placeholder="Enter your goals"
+                  />
+              </div>
+              </>
+            ): null}
             {error && <div className="text-red-500 text-sm text-center">{error}</div>}
             <button
               type="submit"
