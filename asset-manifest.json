@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.98e115d0.css",
-    "main.js": "/static/js/main.24d56668.js",
-    "static/media/ClassCueLogo.png": "/static/media/ClassCueLogo.c52a83c5d80cd0037665.png",
-    "index.html": "/index.html",
-    "main.98e115d0.css.map": "/static/css/main.98e115d0.css.map",
-    "main.24d56668.js.map": "/static/js/main.24d56668.js.map"
+    "main.css": "/classCue/static/css/main.98e115d0.css",
+    "main.js": "/classCue/static/js/main.8a1c3a5e.js",
+    "static/media/ClassCueLogo.png": "/classCue/static/media/ClassCueLogo.c52a83c5d80cd0037665.png",
+    "index.html": "/classCue/index.html",
+    "main.98e115d0.css.map": "/classCue/static/css/main.98e115d0.css.map",
+    "main.8a1c3a5e.js.map": "/classCue/static/js/main.8a1c3a5e.js.map"
   },
   "entrypoints": [
     "static/css/main.98e115d0.css",
-    "static/js/main.24d56668.js"
+    "static/js/main.8a1c3a5e.js"
   ]
 }
