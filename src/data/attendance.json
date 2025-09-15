@@ -1,0 +1,67 @@
+{
+  "today": {
+    "date": "2024-01-15",
+    "classes": [
+      {
+        "id": 1,
+        "subject": "Mathematics",
+        "teacher": "Dr. Smith",
+        "time": "09:00 - 10:00",
+        "room": "Room 101",
+        "students": [
+          { "id": 1, "name": "Alice Johnson", "present": true, "time": "09:05" },
+          { "id": 2, "name": "Bob Smith", "present": true, "time": "09:02" },
+          { "id": 3, "name": "Carol Davis", "present": true, "time": "09:01" },
+          { "id": 4, "name": "David Wilson", "present": false, "time": null },
+          { "id": 5, "name": "Eva Brown", "present": true, "time": "09:03" },
+          { "id": 6, "name": "Frank Miller", "present": true, "time": "09:04" },
+          { "id": 7, "name": "Grace Taylor", "present": true, "time": "09:02" },
+          { "id": 8, "name": "Henry Anderson", "present": true, "time": "09:00" }
+        ]
+      },
+      {
+        "id": 2,
+        "subject": "Physics",
+        "teacher": "Prof. Johnson",
+        "time": "10:15 - 11:15",
+        "room": "Lab 201",
+        "students": [
+          { "id": 1, "name": "Alice Johnson", "present": true, "time": "10:16" },
+          { "id": 2, "name": "Bob Smith", "present": true, "time": "10:17" },
+          { "id": 3, "name": "Carol Davis", "present": true, "time": "10:15" },
+          { "id": 4, "name": "David Wilson", "present": true, "time": "10:18" },
+          { "id": 5, "name": "Eva Brown", "present": false, "time": null },
+          { "id": 6, "name": "Frank Miller", "present": true, "time": "10:16" },
+          { "id": 7, "name": "Grace Taylor", "present": true, "time": "10:17" },
+          { "id": 8, "name": "Henry Anderson", "present": true, "time": "10:15" }
+        ]
+      },
+      {
+        "id": 3,
+        "subject": "English",
+        "teacher": "Ms. Davis",
+        "time": "11:30 - 12:30",
+        "room": "Room 102",
+        "students": [
+          { "id": 1, "name": "Alice Johnson", "present": true, "time": "11:31" },
+          { "id": 2, "name": "Bob Smith", "present": true, "time": "11:32" },
+          { "id": 3, "name": "Carol Davis", "present": true, "time": "11:30" },
+          { "id": 4, "name": "David Wilson", "present": true, "time": "11:33" },
+          { "id": 5, "name": "Eva Brown", "present": true, "time": "11:31" },
+          { "id": 6, "name": "Frank Miller", "present": false, "time": null },
+          { "id": 7, "name": "Grace Taylor", "present": true, "time": "11:32" },
+          { "id": 8, "name": "Henry Anderson", "present": true, "time": "11:30" }
+        ]
+      }
+    ]
+  },
+  "weekly": {
+    "week": "2024-W03",
+    "summary": {
+      "totalClasses": 15,
+      "averageAttendance": 87.5,
+      "topPerformers": ["Henry Anderson", "Carol Davis", "Alice Johnson"],
+      "needsAttention": ["David Wilson", "Frank Miller"]
+    }
+  }
+}

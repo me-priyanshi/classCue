@@ -1,0 +1,499 @@
+/* Theme variables */
+:root {
+  /* Dashboard specific colors */
+  --dashboard-bg: #f8fafc;
+  --card-bg: #ffffff;
+  --nav-bg: #ffffff;
+  --schedule-item-bg: #ffffff;
+  --time-text: #6b7280;
+  --heading-text: #111827;
+  --schedule-tag-bg: #eef2ff;
+  --schedule-tag-text: #4f46e5;
+  /* Light theme defaults */
+  --bg-primary: #f3f4f6;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f9fafb;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
+  --border-color: #e5e7eb;
+  --primary-50: #eef2ff;
+  --primary-100: #e0e7ff;
+  --primary-500: #6366f1;
+  --primary-600: #4f46e5;
+  --primary-700: #4338ca;
+  --success-50: #f0fdf4;
+  --success-500: #22c55e;
+  --success-700: #15803d;
+  --warning-50: #fffbeb;
+  --warning-500: #f59e0b;
+  --warning-700: #b45309;
+  --danger-50: #fef2f2;
+  --danger-500: #ef4444;
+  --danger-700: #b91c1c;
+}
+
+/* Dark theme variables */
+:root.dark {
+  /* Dashboard specific colors */
+  --dashboard-bg: #0A1929;
+  --card-bg: #0e2236;
+  --nav-bg: #0e2236;
+  --schedule-item-bg: #0e2236;
+  --time-text: #94a3b8;
+  --heading-text: #ffffff;
+  --schedule-tag-bg: #132f4c;
+  --schedule-tag-text: #61dafb;
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  --text-primary: #f9fafb;
+  --text-secondary: #e5e7eb;
+  --text-tertiary: #d1d5db;
+  --border-color: #374151;
+  --primary-50: #1f2937;
+  --primary-100: #374151;
+  --primary-500: #6366f1;
+  --primary-600: #4f46e5;
+  --primary-700: #4338ca;
+  --success-50: #064e3b;
+  --success-500: #22c55e;
+  --success-700: #15803d;
+  --warning-50: #451a03;
+  --warning-500: #f59e0b;
+  --warning-700: #b45309;
+  --danger-50: #450a0a;
+  --danger-500: #ef4444;
+  --danger-700: #b91c1c;
+}
+
+/* Base styles */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Card styles */
+.card {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+/* Text colors */
+.text-gray-900 {
+  color: var(--text-primary) !important;
+}
+
+.text-gray-700 {
+  color: var(--text-secondary) !important;
+}
+
+.text-gray-600 {
+  color: var(--text-tertiary) !important;
+}
+
+/* Background colors */
+.bg-gray-50 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.bg-gray-100 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.bg-primary-50 {
+  background-color: var(--primary-50) !important;
+}
+
+.bg-primary-100 {
+  background-color: var(--primary-100) !important;
+}
+
+.bg-primary-600 {
+  background-color: var(--primary-600) !important;
+}
+
+.bg-success-50 {
+  background-color: var(--success-50) !important;
+}
+
+.bg-warning-50 {
+  background-color: var(--warning-50) !important;
+}
+
+.bg-danger-50 {
+  background-color: var(--danger-50) !important;
+}
+
+/* Border colors */
+.border-gray-200 {
+  border-color: var(--border-color) !important;
+}
+
+.border-primary-500 {
+  border-color: var(--primary-500) !important;
+}
+
+/* Form elements */
+.input-field {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.input-field:focus {
+  border-color: var(--primary-500);
+  background-color: var(--bg-secondary);
+}
+
+select {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary-600);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-700);
+}
+
+.btn-secondary {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-primary);
+}
+
+/* Navigation */
+.sidebar {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+/* Success messages */
+.success-message {
+  background-color: var(--success-50);
+  border-color: var(--success-500);
+  color: var(--success-700);
+}
+
+/* Warning messages */
+.warning-message {
+  background-color: var(--warning-50);
+  border-color: var(--warning-500);
+  color: var(--warning-700);
+}
+
+/* Error messages */
+.error-message {
+  background-color: var(--danger-50);
+  border-color: var(--danger-500);
+  color: var(--danger-700);
+}
+
+/* Tables */
+table {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* th {
+  background-color: var(--bg-tertiary);
+} */
+
+/* tr:nth-child(even) {
+  background-color: var(--bg-tertiary);
+} */
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-tertiary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Focus states */
+*:focus {
+  outline-color: var(--primary-500);
+}
+
+/* Additional dark mode overrides */
+.dark .gradient-bg {
+  background: linear-gradient(to bottom right, var(--bg-primary), var(--bg-secondary));
+}
+
+.dark .btn-primary {
+  color: white;
+}
+
+.dark .hover\:bg-gray-100:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+/* Navigation active states */
+.dark .active-nav-item {
+  background-color: var(--primary-50);
+  color: var(--primary-500);
+}
+
+/* Input placeholders */
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* Main layout backgrounds */
+.min-h-screen {
+  background-color: var(--dashboard-bg);
+}
+
+/* Dashboard specific styles */
+.card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+/* Navigation sidebar */
+nav, .sidebar {
+  background-color: var(--nav-bg);
+  border-color: var(--border-color);
+}
+
+/* Schedule items */
+.schedule-item {
+  background-color: var(--schedule-item-bg);
+  border-color: var(--border-color);
+}
+
+/* Time text */
+.text-time {
+  color: var(--time-text) !important;
+}
+
+/* Headings */
+h1, h2, h3, .heading {
+  color: var(--heading-text) !important;
+}
+
+/* Schedule tags (lecture, tutorial, etc.) */
+.lecture, .tutorial {
+  background-color: var(--schedule-tag-bg);
+  color: var(--schedule-tag-text);
+}
+
+/* Current time indicator */
+.current-time {
+  color: var(--primary-500);
+}
+
+/* Progress indicators */
+.progress-bar {
+  background-color: var(--primary-500);
+}
+
+/* Attendance status */
+.attendance-status {
+  color: var(--success-500);
+}
+
+/* Class cards */
+.class-card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+/* Schedule navigation */
+.schedule-nav button {
+  color: var(--text-secondary);
+}
+
+.schedule-nav button.active {
+  color: var(--text-primary);
+  background-color: var(--primary-50);
+}
+
+/* Today's schedule section */
+.today-schedule {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+/* Room numbers and other metadata */
+.metadata {
+  color: var(--text-tertiary);
+}
+
+/* Dashboard cards */
+.dashboard-card {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+/* Status indicators */
+.status-indicator {
+  background-color: var(--success-500);
+}
+
+/* Schedule day tabs */
+.day-tabs button {
+  color: var(--text-secondary);
+}
+
+.day-tabs button.active {
+  color: var(--text-primary);
+  background-color: var(--primary-50);
+}
+
+/* Gradient backgrounds */
+.bg-gradient-to-br {
+  background: linear-gradient(to bottom right, var(--dashboard-bg), var(--card-bg));
+}
+
+/* Dashboard specific overrides */
+.dark {
+  --time-display-color: #60a5fa;
+  --date-text-color: #94a3b8;
+  --nav-active-bg: #1e293b;
+  --nav-text: #e2e8f0;
+  --nav-hover: #374151;
+}
+
+/* Time display */
+.dark .current-time {
+  color: var(--time-display-color) !important;
+}
+
+/* Date display */
+.dark .date-display {
+  color: var(--date-text-color) !important;
+}
+
+/* Navigation */
+.dark .nav-link {
+  color: var(--nav-text);
+}
+
+.dark .nav-link:hover {
+  background-color: var(--nav-hover);
+}
+
+.dark .nav-link.active {
+  background-color: var(--nav-active-bg);
+  color: var(--time-display-color);
+}
+
+/* Class cards */
+.dark .class-info {
+  background-color: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.dark .class-type-tag.lecture {
+  background-color: rgba(96, 165, 250, 0.2);
+  color: #60a5fa;
+}
+
+.dark .class-type-tag.tutorial {
+  background-color: rgba(167, 139, 250, 0.2);
+  color: #a78bfa;
+}
+
+/* Schedule navigation */
+.dark .schedule-days button {
+  color: var(--date-text-color);
+}
+
+.dark .schedule-days button.active {
+  background-color: var(--nav-active-bg);
+  color: var(--time-display-color);
+}
+
+/* Progress indicators */
+.dark .attendance-progress {
+  background-color: #1f2937;
+}
+
+.dark .attendance-progress-bar {
+  background-color: #22c55e;
+}
+
+/* Class timing */
+.dark .class-timing {
+  color: var(--date-text-color);
+}
+
+/* Room number */
+.dark .room-number {
+  color: var(--date-text-color);
+}
+
+/* Professor name */
+.dark .professor-name {
+  color: var(--date-text-color);
+}
+
+/* Current class indicator */
+.dark .current-class-indicator {
+  background-color: rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+/* Welcome message */
+.dark .welcome-message {
+  color: var(--text-primary);
+}
+
+/* Next class indicator */
+.dark .next-class {
+  background-color: rgba(96, 165, 250, 0.1);
+  border-color: rgba(96, 165, 250, 0.2);
+}
+
+/* Today's schedule card */
+.dark .today-schedule .schedule-item {
+  border-color: var(--border-color);
+  background-color: var(--nav-active-bg);
+}
+
+/* Override background for main content area */
+.dark .min-h-screen {
+  background-color: #0f172a !important;
+}
+
+/* Override card backgrounds */
+.dark .card {
+  background-color: #1e293b !important;
+  border-color: #374151 !important;
+}
+
+/* Text colors for dark mode */
+.dark .text-gray-900 {
+  color: #f1f5f9 !important;
+}
+
+.dark .text-gray-600 {
+  color: #94a3b8 !important;
+}
+
+/* Time display */
+.dark .text-time {
+  color: #60a5fa !important;
+}

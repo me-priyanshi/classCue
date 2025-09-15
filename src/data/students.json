@@ -1,0 +1,106 @@
+[
+  {
+    "id": 1,
+    "name": "Alice Johnson",
+    "studentId": "STU001",
+    "email": "alice.johnson@university.edu",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 42,
+      "absent": 3,
+      "percentage": 93.3
+    },
+    "subjects": ["Mathematics", "Physics", "Chemistry", "Computer Science"]
+  },
+  {
+    "id": 2,
+    "name": "Bob Smith",
+    "studentId": "STU002",
+    "email": "bob.smith@university.edu",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 40,
+      "absent": 5,
+      "percentage": 88.9
+    },
+    "subjects": ["Mathematics", "Physics", "Biology", "English"]
+  },
+  {
+    "id": 3,
+    "name": "Carol Davis",
+    "studentId": "STU003",
+    "email": "carol.davis@university.edu",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 44,
+      "absent": 1,
+      "percentage": 97.8
+    },
+    "subjects": ["Mathematics", "Chemistry", "Computer Science", "History"]
+  },
+  {
+    "id": 4,
+    "name": "David Wilson",
+    "studentId": "STU004",
+    "email": "david.wilson@university.edu",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 38,
+      "absent": 7,
+      "percentage": 84.4
+    },
+    "subjects": ["Physics", "Chemistry", "Biology", "English"]
+  },
+  {
+    "id": 5,
+    "name": "Eva Brown",
+    "studentId": "STU005",
+    "email": "eva.brown@university.edu",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 43,
+      "absent": 2,
+      "percentage": 95.6
+    },
+    "subjects": ["Mathematics", "Computer Science", "English", "History"]
+  },
+  {
+    "id": 6,
+    "name": "Frank Miller",
+    "studentId": "STU006",
+    "email": "frank.miller@university.edu",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 41,
+      "absent": 4,
+      "percentage": 91.1
+    },
+    "subjects": ["Physics", "Biology", "Chemistry", "Computer Science"]
+  },
+  {
+    "id": 7,
+    "name": "Grace Taylor",
+    "studentId": "STU007",
+    "email": "grace.taylor@university.edu",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 39,
+      "absent": 6,
+      "percentage": 86.7
+    },
+    "subjects": ["Mathematics", "English", "History", "Biology"]
+  },
+  {
+    "id": 8,
+    "name": "Henry Anderson",
+    "studentId": "STU008",
+    "email": "henry.anderson@university.edu",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 45,
+      "absent": 0,
+      "percentage": 100.0
+    },
+    "subjects": ["Mathematics", "Physics", "Chemistry", "Computer Science"]
+  }
+]
