@@ -5,7 +5,7 @@
       {
         "id": 1,
         "subject": "Mathematics",
-        "teacher": "Dr. Smith",
+        "teacher": "JMS",
         "time": "09:00 - 10:00",
         "room": "Room 101",
         "students": [
@@ -22,7 +22,7 @@
       {
         "id": 2,
         "subject": "Physics",
-        "teacher": "Prof. Johnson",
+        "teacher": "",
         "time": "10:15 - 11:15",
         "room": "Lab 201",
         "students": [

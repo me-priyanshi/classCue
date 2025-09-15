@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { User, GraduationCap, Eye, EyeOff } from 'lucide-react';
+import { User, Eye, EyeOff, GraduationCap } from 'lucide-react';
+import ClassCueLogo from '../../images/ClassCueLogo.png'; 
 
 const Login = ({ onSignupClick }) => {
   const [formData, setFormData] = useState({
@@ -69,13 +70,13 @@ const Login = ({ onSignupClick }) => {
         <div className="card">
           <div className="text-center mb-8">
             <div className="mx-auto w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mb-4">
-              <GraduationCap className="w-8 h-8 text-white" />
+              <img src={ClassCueLogo} alt='ClassCue'/>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
               ClassCue
             </h1>
             <p className="text-gray-600">
-              AI-powered Attendance & Productivity System
+              Smart Curriculum Activity & Attendance App
             </p>
           </div>
 
@@ -107,7 +108,7 @@ const Login = ({ onSignupClick }) => {
                       : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
                   }`}
                 >
-                  <GraduationCap className="w-6 h-6 mx-auto mb-2" />
+                  
                   <span className="font-medium">Faculty</span>
                 </button>
               </div>
