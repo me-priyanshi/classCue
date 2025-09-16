@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/classCue/static/css/main.98e115d0.css",
-    "main.js": "/classCue/static/js/main.8a1c3a5e.js",
+    "main.css": "/classCue/static/css/main.5e5a81dd.css",
+    "main.js": "/classCue/static/js/main.49b5e507.js",
     "static/media/ClassCueLogo.png": "/classCue/static/media/ClassCueLogo.c52a83c5d80cd0037665.png",
     "index.html": "/classCue/index.html",
-    "main.98e115d0.css.map": "/classCue/static/css/main.98e115d0.css.map",
-    "main.8a1c3a5e.js.map": "/classCue/static/js/main.8a1c3a5e.js.map"
+    "main.5e5a81dd.css.map": "/classCue/static/css/main.5e5a81dd.css.map",
+    "main.49b5e507.js.map": "/classCue/static/js/main.49b5e507.js.map"
   },
   "entrypoints": [
-    "static/css/main.98e115d0.css",
-    "static/js/main.8a1c3a5e.js"
+    "static/css/main.5e5a81dd.css",
+    "static/js/main.49b5e507.js"
   ]
 }
