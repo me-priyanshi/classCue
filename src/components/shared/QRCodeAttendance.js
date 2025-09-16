@@ -69,6 +69,12 @@ const QRCodeAttendance = ({ onAttendanceMarked, classId }) => {
     setError(null);
   };
 
+  const videoStyle = {
+    display: 'inline',
+    width: '100%',
+    height: 'auto'
+  };
+  
   return (
     <div className={`card ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
       <div className="text-center mb-6">
@@ -92,8 +98,13 @@ const QRCodeAttendance = ({ onAttendanceMarked, classId }) => {
         )}
 
         {scanning && (
-          <div className="w-full max-w-sm">
-            <div id="qr-reader" className="w-full overflow-hidden rounded-lg"></div>
+          <div className="w-full max-w-sm" style={videoStyle}>
+            <div id="qr-reader" style={{
+              minHeight: '300px',
+              position: 'relative',
+              zIndex: 999
+            }}
+            className="w-full overflow-hidden rounded-lg"></div>
           </div>
         )}
 
