@@ -36,7 +36,7 @@
       "absent": 1,
       "percentage": 97.8
     },
-    "subjects": ["ADA", "SE", "CN", "PDS"]
+    "subjects": ["ADA", "WT", "CN", "SEDA"]
   },
   {
     "id": 4,
@@ -53,9 +53,9 @@
   },
   {
     "id": 5,
-    "name": "Eva Brown",
-    "studentId": "STU005",
-    "email": "eva.brown@university.edu",
+    "name": "Vaibhav Dodiya",
+    "studentId": "240173107013",
+    "email": "240173107013@vgec.ac.in",
     "attendance": {
       "totalClasses": 45,
       "present": 43,
@@ -66,22 +66,22 @@
   },
   {
     "id": 6,
-    "name": "Frank Miller",
-    "studentId": "STU006",
-    "email": "frank.miller@university.edu",
+    "name": "Khushi Rana",
+    "studentId": "250173107021",
+    "email": "250173107021@vgecg.ac.in",
     "attendance": {
       "totalClasses": 45,
       "present": 41,
       "absent": 4,
       "percentage": 91.1
     },
-    "subjects": ["ADA", "SE", "CN", "PDS"]
+    "subjects": ["P&S", "DS", "DBMS", "DF", "ETC", "IC"]
   },
   {
     "id": 7,
-    "name": "Grace Taylor",
-    "studentId": "STU007",
-    "email": "grace.taylor@university.edu",
+    "name": "Krisha Patel",
+    "studentId": "240173107021",
+    "email": "240173107021@vgec.ac.in",
     "attendance": {
       "totalClasses": 45,
       "present": 39,
