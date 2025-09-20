@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import QRCodeAttendance from '../shared/QRCodeAttendance';
-import { Users, CheckCircle, XCircle, Clock, TrendingUp, Download } from 'lucide-react';
+import { Users, CheckCircle, XCircle, Clock, TrendingUp, Download, FileText } from 'lucide-react';
 import studentsData from '../../data/students.json';
 import attendanceData from '../../data/attendance.json';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 import { useAuth } from '../../contexts/AuthContext.jsx';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const FacultyDashboard = () => {
   const { user } = useAuth();
@@ -77,19 +79,137 @@ const FacultyDashboard = () => {
   };
 
   const exportAttendanceCSV = () => {
-    const csvContent = [
-      ['Student ID', 'Name', 'Email', 'Total Classes', 'Present', 'Absent', 'Percentage'],
-      ...studentsData.map(student => [
-        student.studentId,
-        student.name,
-        student.email,
-        student.attendance.totalClasses,
-        student.attendance.present,
-        student.attendance.absent,
-        student.attendance.percentage
-      ])
-    ];
-    // TODO: Add logic for CSV export
+    // Create HTML table with color coding for Excel compatibility
+    const createHTMLTable = () => {
+      let html = `
+        <table border="1" style="border-collapse: collapse;">
+          <thead>
+            <tr style="background-color: #3b82f6; color: white;">
+              <th>Student ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Total Classes</th>
+              <th>Present</th>
+              <th>Absent</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      studentsData.forEach(student => {
+        const presentCount = student.attendance.present;
+        const absentCount = student.attendance.absent;
+        const totalClasses = student.attendance.totalClasses;
+        
+        html += `
+          <tr>
+            <td>${student.studentId}</td>
+            <td>${student.name}</td>
+            <td>${student.email}</td>
+            <td>${totalClasses}</td>
+            <td style="background-color:rgb(56, 233, 174); color: white; text-align: center; font-weight: bold;">${presentCount}</td>
+            <td style="background-color:rgb(252, 125, 125); color: white; text-align: center; font-weight: bold;">${absentCount}</td>
+            <td style="text-align: center;">${student.attendance.percentage}%</td>
+          </tr>
+        `;
+      });
+      
+      html += `
+          </tbody>
+        </table>
+      `;
+      
+      return html;
+    };
+
+    // Create a temporary HTML file with the table
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Attendance Report</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            table { width: 100%; }
+            th, td { padding: 8px; text-align: left; }
+          </style>
+        </head>
+        <body>
+          <h1>ClassCue Attendance Report</h1>
+          <p>Generated on: ${new Date().toLocaleDateString()}</p>
+          ${createHTMLTable()}
+        </body>
+      </html>
+    `;
+
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `attendance_report_${new Date().toISOString().split('T')[0]}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  };
+
+  const exportAttendancePDF = () => {
+    const doc = new jsPDF();
+    
+    // Add title
+    doc.setFontSize(20);
+    doc.text('ClassCue Attendance Report', 20, 20);
+    
+    // Add date
+    doc.setFontSize(12);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 30);
+    
+    // Add summary stats
+    doc.setFontSize(14);
+    doc.text('Summary Statistics', 20, 45);
+    doc.setFontSize(10);
+    doc.text(`Total Students: ${attendanceStats.totalStudents}`, 20, 55);
+    doc.text(`Present Today: ${attendanceStats.presentToday}`, 20, 62);
+    doc.text(`Absent Today: ${attendanceStats.absentToday}`, 20, 69);
+    doc.text(`Average Attendance: ${attendanceStats.averageAttendance}%`, 20, 76);
+    
+    // Prepare table data with color coding
+    const tableData = studentsData.map(student => [
+      student.studentId,
+      student.name,
+      student.email,
+      student.attendance.totalClasses,
+      `Present: ${student.attendance.present}`,
+      `Absent: ${student.attendance.absent}`,
+      `${student.attendance.percentage}%`
+    ]);
+    
+    // Add table with custom cell styling
+    doc.autoTable({
+      head: [['Student ID', 'Name', 'Email', 'Total Classes', 'Present', 'Absent', 'Percentage']],
+      body: tableData,
+      startY: 85,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [59, 130, 246] },
+      alternateRowStyles: { fillColor: [248, 250, 252] },
+      didParseCell: function(data) {
+        // Color code Present and Absent columns
+        if (data.column.index === 4) { // Present column
+          data.cell.styles.fillColor = [16, 185, 129]; // Green
+          data.cell.styles.textColor = [255, 255, 255]; // White text
+          data.cell.styles.fontStyle = 'bold';
+        }
+        if (data.column.index === 5) { // Absent column
+          data.cell.styles.fillColor = [239, 68, 68]; // Red
+          data.cell.styles.textColor = [255, 255, 255]; // White text
+          data.cell.styles.fontStyle = 'bold';
+        }
+      }
+    });
+    
+    // Save the PDF
+    doc.save(`attendance_report_${new Date().toISOString().split('T')[0]}.pdf`);
   };
 
   // user?.name = 'Guru Drona';
@@ -151,6 +271,42 @@ const FacultyDashboard = () => {
             <p className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{attendanceStats.averageAttendance}%</p>
             <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Avg Attendance</p>
           </div>
+        </div>
+      </div>
+
+      {/* Export Options */}
+      <div className={`card ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <div className={`w-10 h-10 ${theme === 'dark' ? 'bg-blue-900' : 'bg-blue-100'} rounded-lg flex items-center justify-center`}>
+              <Download className="w-5 h-5 text-blue-600" />
+            </div>
+            <h3 className={`text-lg font-semibold ml-3 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Export Reports</h3>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <button
+            onClick={exportAttendanceCSV}
+            className={`flex items-center justify-center p-4 rounded-lg border-2 border-green-200 ${theme === 'dark' ? 'bg-green-900 hover:bg-green-800' : 'bg-green-50 hover:bg-green-100'} transition-colors`}
+          >
+            <Download className="w-5 h-5 text-green-600 mr-2" />
+            <div className="text-left">
+              <div className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Export CSV</div>
+              <div className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Download attendance data as CSV file</div>
+            </div>
+          </button>
+          
+          <button
+            onClick={exportAttendancePDF}
+            className={`flex items-center justify-center p-4 rounded-lg border-2 border-red-200 ${theme === 'dark' ? 'bg-red-900 hover:bg-red-800' : 'bg-red-50 hover:bg-red-100'} transition-colors`}
+          >
+            <FileText className="w-5 h-5 text-red-600 mr-2" />
+            <div className="text-left">
+              <div className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Export PDF</div>
+              <div className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Generate formatted PDF report</div>
+            </div>
+          </button>
         </div>
       </div>
 
