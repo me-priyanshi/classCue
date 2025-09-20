@@ -165,7 +165,9 @@ const Login = ({ onSignupClick }) => {
       login(userData);
       
       // Navigate to home after successful login
-      navigate('/');
+      if(formData.email === 'facultyemail@gmail.com' || formData.enrollment === '123456789012') {
+        navigate('/');
+      }
     } catch (error) {
       console.error('Login failed:', error);
     } finally {
@@ -332,7 +334,7 @@ const Login = ({ onSignupClick }) => {
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600 mb-2">
-              Demo credentials: Use any email and password
+              Demo credentials: Use any password
             </p>
             <p className="text-sm text-gray-600">
               Don't have an account?{' '}
