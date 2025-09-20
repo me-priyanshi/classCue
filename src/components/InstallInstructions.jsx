@@ -237,7 +237,7 @@ const InstallInstructions = ({ onClose }) => {
             >
               Got it!
             </button>
-            <button
+            {/* <button
               onClick={() => {
                 // Try to trigger install prompt if available
                 if (window.deferredPrompt) {
@@ -248,7 +248,7 @@ const InstallInstructions = ({ onClose }) => {
               className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
             >
               📱 Install on Phone
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
