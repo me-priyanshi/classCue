@@ -1,7 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import InstallInstructions from './InstallInstructions.jsx';
 
 const PWARegistration = () => {
+  const [showInstallInstructions, setShowInstallInstructions] = useState(false);
+  const [isInstalled, setIsInstalled] = useState(false);
+  const [showInstallButton, setShowInstallButton] = useState(false);
+
   useEffect(() => {
+    // Check if app is already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstalled(true);
+      return;
+    }
+
     // Register service worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -21,49 +32,71 @@ const PWARegistration = () => {
       console.log('PWA install prompt triggered');
       e.preventDefault();
       deferredPrompt = e;
-      
-      // Show install button or notification
-      const installButton = document.createElement('button');
-      installButton.textContent = 'Install ClassCue App';
-      installButton.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: #3b82f6;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        z-index: 1000;
-        font-size: 14px;
-      `;
-      
-      installButton.addEventListener('click', () => {
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('User accepted the install prompt');
-            } else {
-              console.log('User dismissed the install prompt');
-            }
-            deferredPrompt = null;
-            installButton.remove();
-          });
-        }
-      });
-      
-      document.body.appendChild(installButton);
+      window.deferredPrompt = deferredPrompt;
+      setShowInstallButton(true);
     });
 
     // Handle successful installation
     window.addEventListener('appinstalled', () => {
       console.log('PWA was installed');
+      setIsInstalled(true);
+      setShowInstallButton(false);
     });
-  }, []);
 
-  return null;
+    // Check if install prompt is available after a delay
+    setTimeout(() => {
+      if (!isInstalled && !showInstallButton) {
+        // Show manual install instructions if no automatic prompt
+        setShowInstallInstructions(true);
+      }
+    }, 3000);
+
+  }, [isInstalled, showInstallButton]);
+
+  const handleInstallClick = () => {
+    if (window.deferredPrompt) {
+      window.deferredPrompt.prompt();
+      window.deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+          // Show manual instructions if user dismisses
+          setShowInstallInstructions(true);
+        }
+        window.deferredPrompt = null;
+        setShowInstallButton(false);
+      });
+    } else {
+      // Show manual instructions if no prompt available
+      setShowInstallInstructions(true);
+    }
+  };
+
+  if (isInstalled) {
+    return null;
+  }
+
+  return (
+    <>
+      {/* Installation guide button - positioned below download button */}
+      {!isInstalled && (
+        <button
+          onClick={() => setShowInstallInstructions(true)}
+          className="fixed top-20 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-700 transition-colors z-40 flex items-center space-x-2"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Install Guide</span>
+        </button>
+      )}
+
+      {showInstallInstructions && (
+        <InstallInstructions onClose={() => setShowInstallInstructions(false)} />
+      )}
+    </>
+  );
 };
 
 export default PWARegistration;

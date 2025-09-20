@@ -175,46 +175,19 @@ const Login = ({ onSignupClick }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center p-4 relative">
-      {/* PWA Install Button - Top Right Corner */}
+      {/* Custom Download Button - Top Right Corner */}
       {(showInstallButton || isMobileDevice) && (
-        <button
+        <button 
+          className="button" 
           onClick={handleInstallClick}
-          className="install-pwa-button"
           style={{
             position: 'fixed',
             top: '20px',
             right: '20px',
-            zIndex: 1000,
-            display: 'inline-block',
-            padding: '12px 24px',
-            textAlign: 'center',
-            fontSize: '16px',
-            letterSpacing: '1px',
-            textDecoration: 'none',
-            color: '#725AC1',
-            background: 'transparent',
-            cursor: 'pointer',
-            transition: 'ease-out 0.5s',
-            border: '2px solid #725AC1',
-            borderRadius: '10px',
-            boxShadow: 'inset 0 0 0 0 #725AC1'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.color = 'white';
-            e.target.style.boxShadow = 'inset 0 -100px 0 0 #725AC1';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.color = '#725AC1';
-            e.target.style.boxShadow = 'inset 0 0 0 0 #725AC1';
-          }}
-          onMouseDown={(e) => {
-            e.target.style.transform = 'scale(0.9)';
-          }}
-          onMouseUp={(e) => {
-            e.target.style.transform = 'scale(1)';
+            zIndex: 1000
           }}
         >
-          📱 Install App
+          <span>Download</span>
         </button>
       )}
       
