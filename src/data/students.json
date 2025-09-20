@@ -92,9 +92,9 @@
   },
   {
     "id": 8,
-    "name": "Henry Anderson",
-    "studentId": "STU008",
-    "email": "henry.anderson@university.edu",
+    "name": "Priti Samanta",
+    "studentId": "230170107121",
+    "email": "230170107121@vgec.ac.in",
     "attendance": {
       "totalClasses": 45,
       "present": 45,
