@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { User, Eye, EyeOff, GraduationCap } from 'lucide-react';
@@ -13,6 +13,8 @@ const Login = ({ onSignupClick }) => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showInstallButton, setShowInstallButton] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -29,6 +31,53 @@ const Login = ({ onSignupClick }) => {
       ...prev,
       role
     }));
+  };
+
+  // PWA Install functionality
+  useEffect(() => {
+    // Check if app is already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setShowInstallButton(false);
+      return;
+    }
+
+    // Listen for beforeinstallprompt event
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallButton(true);
+    };
+
+    // Listen for appinstalled event
+    const handleAppInstalled = () => {
+      setShowInstallButton(false);
+      setDeferredPrompt(null);
+      console.log('PWA was installed');
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+      console.log('User accepted the install prompt');
+    } else {
+      console.log('User dismissed the install prompt');
+    }
+    
+    setDeferredPrompt(null);
+    setShowInstallButton(false);
   };
 
   const handleSubmit = async (e) => {
@@ -66,7 +115,50 @@ const Login = ({ onSignupClick }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center p-4 relative">
+      {/* PWA Install Button - Top Right Corner */}
+      {showInstallButton && (
+        <button
+          onClick={handleInstallClick}
+          className="install-pwa-button"
+          style={{
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            zIndex: 1000,
+            display: 'inline-block',
+            padding: '12px 24px',
+            textAlign: 'center',
+            fontSize: '16px',
+            letterSpacing: '1px',
+            textDecoration: 'none',
+            color: '#725AC1',
+            background: 'transparent',
+            cursor: 'pointer',
+            transition: 'ease-out 0.5s',
+            border: '2px solid #725AC1',
+            borderRadius: '10px',
+            boxShadow: 'inset 0 0 0 0 #725AC1'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.color = 'white';
+            e.target.style.boxShadow = 'inset 0 -100px 0 0 #725AC1';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.color = '#725AC1';
+            e.target.style.boxShadow = 'inset 0 0 0 0 #725AC1';
+          }}
+          onMouseDown={(e) => {
+            e.target.style.transform = 'scale(0.9)';
+          }}
+          onMouseUp={(e) => {
+            e.target.style.transform = 'scale(1)';
+          }}
+        >
+          📱 Install App
+        </button>
+      )}
+      
       <div className="max-w-md w-full">
         <div className="card">
           <div className="text-center mb-8">
@@ -213,6 +305,7 @@ const Login = ({ onSignupClick }) => {
               </Link>
             </p>
           </div>
+
         </div>
       </div>
     </div>
