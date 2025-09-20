@@ -14,6 +14,9 @@ const Login = ({ onSignupClick }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showInstallButton, setShowInstallButton] = useState(false);
+  
+  // Check if device is mobile on component mount
+  const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -41,11 +44,19 @@ const Login = ({ onSignupClick }) => {
       return;
     }
 
-    // Listen for beforeinstallprompt event
+    // Detect mobile devices
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
+
+    console.log('Device detection:', { isMobile, isIOS, isAndroid, userAgent: navigator.userAgent });
+
+    // Listen for beforeinstallprompt event (mainly for Android Chrome)
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
       setShowInstallButton(true);
+      console.log('PWA install prompt available');
     };
 
     // Listen for appinstalled event
@@ -55,8 +66,43 @@ const Login = ({ onSignupClick }) => {
       console.log('PWA was installed');
     };
 
+    // For mobile browsers, always show install button
+    const checkPWAReadiness = () => {
+      if ('serviceWorker' in navigator) {
+        // Register service worker if not already registered
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('Service Worker registered:', registration);
+            // Always show install button for mobile devices
+            if (isMobile || isIOS || isAndroid) {
+              setShowInstallButton(true);
+              console.log('PWA ready for mobile installation - showing button');
+            }
+          })
+          .catch((error) => {
+            console.log('Service Worker registration failed:', error);
+            // Even if service worker fails, show button for mobile
+            if (isMobile || isIOS || isAndroid) {
+              setShowInstallButton(true);
+              console.log('Showing install button despite SW failure');
+            }
+          });
+      } else {
+        // No service worker support, but still show button for mobile
+        if (isMobile || isIOS || isAndroid) {
+          setShowInstallButton(true);
+          console.log('No SW support, but showing button for mobile');
+        }
+      }
+    };
+
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     window.addEventListener('appinstalled', handleAppInstalled);
+
+    // Check PWA readiness immediately and after delay
+    checkPWAReadiness();
+    setTimeout(checkPWAReadiness, 1000);
+    setTimeout(checkPWAReadiness, 3000);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -65,19 +111,32 @@ const Login = ({ onSignupClick }) => {
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
 
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
-      console.log('User accepted the install prompt');
+    if (deferredPrompt) {
+      // Android Chrome - use the prompt
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      
+      if (outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      
+      setDeferredPrompt(null);
+      setShowInstallButton(false);
+    } else if (isIOS) {
+      // iOS Safari - show instructions
+      alert('To install this app on your iOS device:\n\n1. Tap the Share button (square with arrow up)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add" to install');
+    } else if (isAndroid) {
+      // Android - show instructions
+      alert('To install this app on your Android device:\n\n1. Tap the menu button (⋮) in your browser\n2. Look for "Add to Home screen" or "Install app"\n3. Tap it to install the app');
     } else {
-      console.log('User dismissed the install prompt');
+      // Desktop or other browsers
+      alert('To install this app:\n\n1. Look for the install icon in your browser address bar\n2. Click it to install the app\n3. Or use your browser\'s menu to add to home screen');
     }
-    
-    setDeferredPrompt(null);
-    setShowInstallButton(false);
   };
 
   const handleSubmit = async (e) => {
@@ -117,7 +176,7 @@ const Login = ({ onSignupClick }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center p-4 relative">
       {/* PWA Install Button - Top Right Corner */}
-      {showInstallButton && (
+      {(showInstallButton || isMobileDevice) && (
         <button
           onClick={handleInstallClick}
           className="install-pwa-button"
