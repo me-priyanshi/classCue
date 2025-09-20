@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 import { User, GraduationCap, Eye, EyeOff } from 'lucide-react';
 import ClassCueLogo from '../../images/ClassCueLogo.png';
 

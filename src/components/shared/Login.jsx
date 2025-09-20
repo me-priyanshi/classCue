@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { User, Eye, EyeOff, GraduationCap } from 'lucide-react';
 import ClassCueLogo from '../../images/ClassCueLogo.png'; 
@@ -14,6 +14,7 @@ const Login = ({ onSignupClick }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -56,7 +57,7 @@ const Login = ({ onSignupClick }) => {
       login(userData);
       
       // Navigate to home after successful login
-      window.location.href = '/';
+      navigate('/');
     } catch (error) {
       console.error('Login failed:', error);
     } finally {

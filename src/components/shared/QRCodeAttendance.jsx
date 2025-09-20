@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
 import { QrCode, CheckCircle, AlertCircle, Camera } from 'lucide-react';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../contexts/ThemeContext.jsx';
 
 const QRCodeAttendance = ({ onAttendanceMarked, classId }) => {
   const [scanning, setScanning] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 import { 
   Home, 
   Calendar, 
@@ -11,7 +11,7 @@ import {
   Camera,
   BarChart3
 } from 'lucide-react';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../contexts/ThemeContext.jsx';
 import ClassCueLogo from '../../images/ClassCueLogo.png';
 
 const UserAvatar = ({ user, theme }) => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Clock, Calendar, CheckCircle, AlertCircle, BookOpen, Target } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 import tasksData from '../../data/tasks.json';
 import attendanceData from '../../data/attendance.json';
 
