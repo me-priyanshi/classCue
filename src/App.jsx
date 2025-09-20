@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
 import { ThemeProvider } from './contexts/ThemeContext.jsx';
-import PWARegistration from './components/PWARegistration';
 import Login from './components/shared/Login.jsx';
 import Signup from './components/shared/Signup.jsx';
 import Navigation from './components/shared/Navigation.jsx';
@@ -44,7 +43,6 @@ const AppContent = () => {
 
   return (
     <Router>
-      <PWARegistration />
       <Routes>
         <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
