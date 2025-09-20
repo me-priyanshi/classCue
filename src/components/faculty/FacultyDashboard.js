@@ -92,7 +92,7 @@ const FacultyDashboard = () => {
     // TODO: Add logic for CSV export
   };
 
-  user?.name = 'Guru Drona';
+  // user?.name = 'Guru Drona';
 
   return (
     <div className="space-y-6">
