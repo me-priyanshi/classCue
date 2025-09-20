@@ -3,7 +3,6 @@ import { Clock, Calendar, CheckCircle, AlertCircle, BookOpen, Target } from 'luc
 import { useAuth } from '../../contexts/AuthContext';
 import tasksData from '../../data/tasks.json';
 import attendanceData from '../../data/attendance.json';
-import QRCodeAttendance from '../shared/QRCodeAttendance';
 
 const StudentDashboard = () => {
   const { user } = useAuth();

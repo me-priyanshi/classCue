@@ -39,17 +39,17 @@ const Login = ({ onSignupClick }) => {
       const userData = formData.role === 'student' 
         ? {
             id: formData.enrollment || 'STU001',
-            name: 'Alice Johnson',
+            name: 'Raja Ram',
             enrollment: formData.enrollment,
             role: 'student',
-            avatar: `https://ui-avatars.com/api/?name=Alice+Johnson&background=3b82f6&color=fff`
+            avatar: `https://ui-avatars.com/api/?name=Raja+Ram&background=3b82f6&color=fff`
           }
         : {
             id: 'FAC001',
-            name: 'Dr. Smith',
+            name: 'Guru Drona',
             email: formData.email,
             role: 'faculty',
-            avatar: `https://ui-avatars.com/api/?name=Dr+Smith&background=3b82f6&color=fff`
+            avatar: `https://ui-avatars.com/api/?name=Guru+Drona&background=3b82f6&color=fff`
           };
 
       await new Promise(resolve => setTimeout(resolve, 1000));
