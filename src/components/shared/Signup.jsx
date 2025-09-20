@@ -235,6 +235,37 @@ const Signup = ({ onLoginClick }) => {
             {formData.role === 'student' ? (
               <>
                 <div>
+                <label htmlFor="semester" className="block text-sm font-medium text-gray-700 mb-2">
+                  Semester
+                </label>
+                <select className="input-field pr-10" id="semester" name="semester">
+                  <option value="" disabled selected>Select your semester</option>
+                  <option value="first">1</option>
+                  <option value="second">2</option>
+                  <option value="third">3</option>
+                  <option value="fourth">4</option>
+                  <option value="fifth">5</option>
+                  <option value="sixth">6</option>
+                  <option value="seventh">7</option>
+                  <option value="eighth">8</option>
+                </select>
+                </div>
+                <div>
+                <label htmlFor="branch" className="block text-sm font-medium text-gray-700 mb-2">
+                  Branch
+                </label>
+                <select className="input-field pr-10" id="branch" name="branch" required>
+                  <option value="" disabled selected>Select your branch</option>
+                  <option value="ce">Computer Engineering</option>
+                  <option value="cse">Computer Science & Engineering (Data Science)</option>
+                  <option value="ec">Electronics & Communication Engineering</option>
+                  <option value="ee">Electrical & Electronics Engineering</option>
+                  <option value="mech">Mechanical Engineering</option>
+                  <option value="civil">Civil Engineering</option>
+                  <option value="it">Information Technology</option>
+                </select>
+                </div>
+                <div>
                 <label htmlFor="interests" className="block text-sm font-medium text-gray-700 mb-2">
                   Interests
                 </label>

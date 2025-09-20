@@ -153,7 +153,7 @@ const FacultyAttendance = () => {
               <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{cls.teacher}</p>
               <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>{cls.room}</p>
               <div className="mt-2 flex items-center justify-between">
-                <span className="text-sm font-medium text-primary-200">
+                <span className={`text-sm font-medium ${theme === 'dark' ? 'text-primary-200' : 'text-primary-400'}`}>
                   {cls.students.filter(s => s.present).length}/{cls.students.length} present
                 </span>
                 <div className="w-16 bg-gray-200 rounded-full h-2">
