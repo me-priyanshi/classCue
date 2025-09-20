@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Users, CheckCircle, XCircle, Clock, Calendar, Download, Filter } from 'lucide-react';
+import { Users, CheckCircle, XCircle, Clock, Calendar, Download, Filter, FileText } from 'lucide-react';
 import attendanceData from '../../data/attendance.json';
 import studentsData from '../../data/students.json';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 import QRAttendanceSession from './QRAttendanceSession';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const FacultyAttendance = () => {
   const { theme } = useTheme();
@@ -22,29 +24,144 @@ const FacultyAttendance = () => {
   const exportClassAttendanceCSV = () => {
     if (!currentClass) return;
 
-    const csvContent = [
-      ['Student ID', 'Name', 'Email', 'Status', 'Time'],
-      ...currentClass.students.map(student => {
+    // Create HTML table with color coding for Excel compatibility
+    const createHTMLTable = () => {
+      let html = `
+        <table border="1" style="border-collapse: collapse;">
+          <thead>
+            <tr style="background-color: #3b82f6; color: white;">
+              <th>Student ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      
+      currentClass.students.forEach(student => {
         const studentInfo = getStudentInfo(student.id);
-        return [
-          student.studentId || student.id,
-          student.name,
-          studentInfo?.email || '',
-          student.present ? 'Present' : 'Absent',
-          student.time || 'N/A'
-        ];
-      })
-    ].map(row => row.join(',')).join('\n');
+        const status = student.present ? 'Present' : 'Absent';
+        const statusColor = student.present ? '#10b981' : '#ef4444';
+        
+        html += `
+          <tr>
+            <td>${student.studentId || student.id}</td>
+            <td>${student.name}</td>
+            <td>${studentInfo?.email || ''}</td>
+            <td style="background-color: ${statusColor}; color: white; text-align: center; font-weight: bold;">${status}</td>
+            <td style="text-align: center;">${student.time || 'N/A'}</td>
+          </tr>
+        `;
+      });
+      
+      html += `
+          </tbody>
+        </table>
+      `;
+      
+      return html;
+    };
 
-    const blob = new Blob([csvContent], { type: 'text/csv' });
+    // Create a temporary HTML file with the table
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>${currentClass.subject} - Class Attendance</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            table { width: 100%; }
+            th, td { padding: 8px; text-align: left; }
+          </style>
+        </head>
+        <body>
+          <h1>${currentClass.subject} - Class Attendance</h1>
+          <p>Teacher: ${currentClass.teacher}</p>
+          <p>Time: ${currentClass.time} | Room: ${currentClass.room}</p>
+          <p>Date: ${new Date().toLocaleDateString()}</p>
+          ${createHTMLTable()}
+        </body>
+      </html>
+    `;
+
+    const blob = new Blob([htmlContent], { type: 'text/html' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${currentClass.subject}_attendance_${new Date().toISOString().split('T')[0]}.csv`;
+    a.download = `${currentClass.subject}_attendance_${new Date().toISOString().split('T')[0]}.html`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
+  };
+
+  const exportClassAttendancePDF = () => {
+    if (!currentClass) return;
+
+    const doc = new jsPDF();
+    
+    // Add title
+    doc.setFontSize(20);
+    doc.text(`${currentClass.subject} - Class Attendance`, 20, 20);
+    
+    // Add class details
+    doc.setFontSize(12);
+    doc.text(`Teacher: ${currentClass.teacher}`, 20, 30);
+    doc.text(`Time: ${currentClass.time}`, 20, 37);
+    doc.text(`Room: ${currentClass.room}`, 20, 44);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 51);
+    
+    // Add attendance summary
+    const presentCount = currentClass.students.filter(s => s.present).length;
+    const totalCount = currentClass.students.length;
+    const attendancePercentage = ((presentCount / totalCount) * 100).toFixed(1);
+    
+    doc.setFontSize(14);
+    doc.text('Attendance Summary', 20, 65);
+    doc.setFontSize(10);
+    doc.text(`Present: ${presentCount}/${totalCount} (${attendancePercentage}%)`, 20, 75);
+    doc.text(`Absent: ${totalCount - presentCount}`, 20, 82);
+    
+    // Prepare table data with color coding
+    const tableData = currentClass.students.map(student => {
+      const studentInfo = getStudentInfo(student.id);
+      return [
+        student.studentId || student.id,
+        student.name,
+        studentInfo?.email || '',
+        student.present ? 'Present' : 'Absent',
+        student.time || 'N/A'
+      ];
+    });
+    
+    // Add table with custom cell styling
+    doc.autoTable({
+      head: [['Student ID', 'Name', 'Email', 'Status', 'Time']],
+      body: tableData,
+      startY: 90,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [59, 130, 246] },
+      alternateRowStyles: { fillColor: [248, 250, 252] },
+      didParseCell: function(data) {
+        // Color code Status column
+        if (data.column.index === 3) { // Status column
+          if (data.cell.raw === 'Present') {
+            data.cell.styles.fillColor = [16, 185, 129]; // Green
+            data.cell.styles.textColor = [255, 255, 255]; // White text
+            data.cell.styles.fontStyle = 'bold';
+          } else if (data.cell.raw === 'Absent') {
+            data.cell.styles.fillColor = [239, 68, 68]; // Red
+            data.cell.styles.textColor = [255, 255, 255]; // White text
+            data.cell.styles.fontStyle = 'bold';
+          }
+        }
+      }
+    });
+    
+    // Save the PDF
+    doc.save(`${currentClass.subject}_attendance_${new Date().toISOString().split('T')[0]}.pdf`);
   };
 
   const filteredStudents = currentClass?.students.filter(student => {
@@ -74,14 +191,24 @@ const FacultyAttendance = () => {
               <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Monitor and manage student attendance in real-time</p>
             </div>
           </div>
-          <button
-            onClick={exportClassAttendanceCSV}
-            className="btn-primary flex items-center"
-            disabled={!currentClass}
-          >
-            <Download className="w-4 h-4 mr-2" />
-            Export CSV
-          </button>
+          <div className="flex space-x-2">
+            <button
+              onClick={exportClassAttendanceCSV}
+              className="btn-primary flex items-center"
+              disabled={!currentClass}
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Export CSV
+            </button>
+            <button
+              onClick={exportClassAttendancePDF}
+              className="btn-secondary flex items-center"
+              disabled={!currentClass}
+            >
+              <FileText className="w-4 h-4 mr-2" />
+              Export PDF
+            </button>
+          </div>
         </div>
       </div>
 
