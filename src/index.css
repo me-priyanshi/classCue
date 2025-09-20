@@ -70,4 +70,23 @@
     opacity: 4;
     right: 0;
   }
+
+  /* Mobile-specific button adjustments */
+  @media (max-width: 640px) {
+    .button {
+      font-size: 11px;
+      padding: 6px 12px;
+      width: auto;
+      min-width: 70px;
+    }
+    
+    .button span:after {
+      content: '';
+      display: none;
+    }
+    
+    .button:hover span {
+      padding-right: 0;
+    }
+  }
 }

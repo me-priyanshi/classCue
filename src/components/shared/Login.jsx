@@ -184,7 +184,11 @@ const Login = ({ onSignupClick }) => {
             position: 'fixed',
             top: '20px',
             right: '20px',
-            zIndex: 1000
+            zIndex: 1000,
+            fontSize: '12px',
+            padding: '8px 16px',
+            width: 'auto',
+            minWidth: '80px'
           }}
         >
           <span>Download</span>

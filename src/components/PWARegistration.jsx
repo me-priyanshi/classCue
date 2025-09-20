@@ -79,16 +79,17 @@ const PWARegistration = () => {
 
   return (
     <>
-      {/* Installation guide button - positioned below download button */}
+      {/* Installation guide button - positioned for mobile */}
       {!isInstalled && (
         <button
           onClick={() => setShowInstallInstructions(true)}
-          className="fixed top-20 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-700 transition-colors z-40 flex items-center space-x-2"
+          className="fixed top-4 left-4 bg-green-600 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-green-700 transition-colors z-40 flex items-center space-x-2 text-sm sm:top-20 sm:right-4 sm:left-auto sm:px-4 sm:text-base"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <span>Install Guide</span>
+          <span className="hidden sm:inline">Install Guide</span>
+          <span className="sm:hidden">Guide</span>
         </button>
       )}
 
