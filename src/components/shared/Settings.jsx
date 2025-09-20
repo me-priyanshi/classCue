@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Settings as SettingsIcon, User, Palette, Save } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useAuth } from '../../contexts/AuthContext.jsx';
+import { useTheme } from '../../contexts/ThemeContext.jsx';
 
 const Settings = () => {
   const { user, updateUser } = useAuth();

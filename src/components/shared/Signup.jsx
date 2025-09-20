@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { User, Eye, EyeOff, GraduationCap } from 'lucide-react';
-import ClassCueLogo from '../../images/ClassCueLogo.png'; 
+import { useAuth } from '../../contexts/AuthContext.jsx';
+import { User, GraduationCap, Eye, EyeOff } from 'lucide-react';
 
-const Login = ({ onSignupClick }) => {
+const Signup = ({ onLoginClick }) => {
   const [formData, setFormData] = useState({
     enrollment: '', // For students
     email: '',      // For faculty
     password: '',
-    role: 'student'
+    confirmPassword: '',
+    role: 'student',
+    interests: '',
+    skills: '',
+    goals: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const [error, setError] = useState('');
+  const auth = useAuth();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -30,35 +35,54 @@ const Login = ({ onSignupClick }) => {
     }));
   };
 
+  const validatePassword = (password) => {
+    // At least one letter, one number, one symbol
+    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,15}$/.test(password);
+  };
+
+  const validateEnrollment = (enrollment) => {
+    // 12 digits only
+    return /^[0-9]{12}$/.test(enrollment);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    if (formData.role === 'student') {
+      if (!validateEnrollment(formData.enrollment)) {
+        setError('Enrollment number must be 6-10 alphanumeric characters.');
+        return;
+      }
+    } else {
+      if (!formData.email.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)) {
+        setError('Please enter a valid email address.');
+        return;
+      }
+    }
+    if (!validatePassword(formData.password)) {
+      setError('Password must contain at least one letter, one number, one symbol, and be at least 6 characters.');
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
     setIsLoading(true);
-
     try {
-      // Simulate API call
-      const userData = formData.role === 'student' 
-        ? {
-            id: formData.enrollment || 'STU001',
-            name: 'Raja Ram',
-            enrollment: formData.enrollment,
-            role: 'student',
-            avatar: `https://ui-avatars.com/api/?name=Raja+Ram&background=3b82f6&color=fff`
-          }
-        : {
-            id: 'FAC001',
-            name: 'Guru Drona',
-            email: formData.email,
-            role: 'faculty',
-            avatar: `https://ui-avatars.com/api/?name=Guru+Drona&background=3b82f6&color=fff`
-          };
-
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      login(userData);
-      
-      // Navigate to home after successful login
-      window.location.href = '/';
+      await auth.signup({
+        ...formData,
+        identifier: formData.role === 'student' ? formData.enrollment : formData.email
+      });
+      // Reset form
+      setFormData({
+        enrollment: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        role: 'student'
+      });
     } catch (error) {
-      console.error('Login failed:', error);
+      setError(error.message || 'Failed to sign up');
     } finally {
       setIsLoading(false);
     }
@@ -70,18 +94,16 @@ const Login = ({ onSignupClick }) => {
         <div className="card">
           <div className="text-center mb-8">
             <div className="mx-auto w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mb-4">
-              <img src={ClassCueLogo} alt='ClassCue'/>
+              <GraduationCap className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              ClassCue
+              Sign Up
             </h1>
             <p className="text-gray-600">
-              Smart Curriculum Activity & Attendance App
+              Create your ClassCue account
             </p>
           </div>
-
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Role Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
                 Select Your Role
@@ -108,13 +130,11 @@ const Login = ({ onSignupClick }) => {
                       : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
                   }`}
                 >
-                  
+                  <GraduationCap className="w-6 h-6 mx-auto mb-2" />
                   <span className="font-medium">Faculty</span>
                 </button>
               </div>
             </div>
-
-            {/* Enrollment or Email Input */}
             {formData.role === 'student' ? (
               <div>
                 <label htmlFor="enrollment" className="block text-sm font-medium text-gray-700 mb-2">
@@ -126,12 +146,10 @@ const Login = ({ onSignupClick }) => {
                   name="enrollment"
                   value={formData.enrollment}
                   onChange={handleInputChange}
-                  pattern='^[0-9]{12}$'
-                  onInvalid={e => e.target.setCustomValidity('Enrollment number must be exactly 12 digits.')}
-                  onInput={e => e.target.setCustomValidity('')}
                   className="input-field"
                   placeholder="Enter your enrollment number"
                   required
+                  pattern="^[0-9]{12}$"
                 />
               </div>
             ) : (
@@ -151,8 +169,6 @@ const Login = ({ onSignupClick }) => {
                 />
               </div>
             )}
-
-            {/* Password Input */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Password
@@ -164,11 +180,12 @@ const Login = ({ onSignupClick }) => {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  minLength={6}
-                  maxLength={15}
                   className="input-field pr-10"
                   placeholder="Enter your password"
                   required
+                  minLength={6}
+                  maxLength={15}
+                  title="Password must contain at least one letter, one number, one symbol, and be between 6-15 characters"
                 />
                 <button
                   type="button"
@@ -183,8 +200,81 @@ const Login = ({ onSignupClick }) => {
                 </button>
               </div>
             </div>
-
-            {/* Submit Button */}
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  className="input-field pr-10"
+                  placeholder="Confirm your password"
+                  required
+                  minLength={6}
+                  maxLength={15}
+                  title="Password must contain at least one letter, one number, one symbol, and be between 6-15 characters"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-5 w-5 text-gray-400" />
+                  ) : (
+                    <Eye className="h-5 w-5 text-gray-400" />
+                  )}
+                </button>
+              </div>
+            </div>
+            {formData.role === 'student' ? (
+              <>
+                <div>
+                <label htmlFor="interests" className="block text-sm font-medium text-gray-700 mb-2">
+                  Interests
+                </label>
+                <textarea
+                    id="interests"
+                    name="interests"
+                    value={formData.interests}
+                    onChange={handleInputChange}
+                    className="input-field pr-10"
+                    placeholder="Enter your interest areas"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="skills" className="block text-sm font-medium text-gray-700 mb-2">
+                    Skills
+                  </label>
+                  <textarea
+                      id="skills"
+                      name="skills"
+                      value={formData.skills}
+                      onChange={handleInputChange}
+                      className="input-field pr-10"
+                      placeholder="Enter your skills areas"
+                    />
+                </div>
+                <div>
+                  <label htmlFor="goals" className="block text-sm font-medium text-gray-700 mb-2">
+                    Goals
+                  </label>
+                  <textarea
+                      id="goals"
+                      name="goals"
+                      value={formData.goals}
+                      onChange={handleInputChange}
+                      className="input-field pr-10"
+                      placeholder="Enter your goals"
+                    />
+                </div>
+              </>
+            ): null}
+            {error && <div className="text-red-500 text-sm text-center">{error}</div>}
             <button
               type="submit"
               disabled={isLoading}
@@ -193,22 +283,18 @@ const Login = ({ onSignupClick }) => {
               {isLoading ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Signing In...
+                  Signing Up...
                 </>
               ) : (
-                'Sign In'
+                'Sign Up'
               )}
             </button>
           </form>
-
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600 mb-2">
-              Demo credentials: Use any email and password
-            </p>
             <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
-              <Link to="/signup" className="text-primary-600 font-medium underline">
-                Sign Up
+              Already have an account?{' '}
+              <Link to="/login" className="text-primary-600 font-medium underline">
+                Login
               </Link>
             </p>
           </div>
@@ -218,4 +304,4 @@ const Login = ({ onSignupClick }) => {
   );
 };
 
-export default Login;
+export default Signup;

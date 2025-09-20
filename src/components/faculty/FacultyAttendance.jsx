@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Users, CheckCircle, XCircle, Clock, Calendar, Download, Filter } from 'lucide-react';
 import attendanceData from '../../data/attendance.json';
 import studentsData from '../../data/students.json';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../contexts/ThemeContext.jsx';
 import QRAttendanceSession from './QRAttendanceSession';
 
 const FacultyAttendance = () => {

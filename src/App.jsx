@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { ThemeProvider } from './contexts/ThemeContext';
-import Login from './components/shared/Login';
-import Signup from './components/shared/Signup';
-import Navigation from './components/shared/Navigation';
-import QRCodeAttendance from './components/shared/QRCodeAttendance';
+import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
+import { ThemeProvider } from './contexts/ThemeContext.jsx';
+import PWARegistration from './components/PWARegistration';
+import Login from './components/shared/Login.jsx';
+import Signup from './components/shared/Signup.jsx';
+import Navigation from './components/shared/Navigation.jsx';
+import QRCodeAttendance from './components/shared/QRCodeAttendance.jsx';
 
 // Student Components
-import StudentDashboard from './components/student/StudentDashboard';
-// import StudentTimetable from './components/student/StudentTimetable';
-import StudentTasks from './components/student/StudentTasks';
+import StudentDashboard from './components/student/StudentDashboard.jsx';
+// import StudentTimetable from './components/student/StudentTimetable.jsx';
+import StudentTasks from './components/student/StudentTasks.jsx';
 
 // Faculty Components
-import FacultyDashboard from './components/faculty/FacultyDashboard';
-import FacultyStudents from './components/faculty/FacultyStudents';
-import FacultyAttendance from './components/faculty/FacultyAttendance';
+import FacultyDashboard from './components/faculty/FacultyDashboard.jsx';
+import FacultyStudents from './components/faculty/FacultyStudents.jsx';
+import FacultyAttendance from './components/faculty/FacultyAttendance.jsx';
 
 // Shared Components
-import Settings from './components/shared/Settings';
+import Settings from './components/shared/Settings.jsx';
 
 const AppContent = () => {
   const { user, loading } = useAuth();
@@ -43,11 +44,13 @@ const AppContent = () => {
 
   return (
     <Router>
+      <PWARegistration />
       <Routes>
+        <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route
-          path="/*"
+          path="/dashboard"
           element={
             user ? (
               <div className="min-h-screen bg-gray-50">
@@ -101,6 +104,7 @@ const AppContent = () => {
             )
           }
         />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );

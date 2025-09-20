@@ -3,8 +3,8 @@ import QRCodeAttendance from '../shared/QRCodeAttendance';
 import { Users, CheckCircle, XCircle, Clock, TrendingUp, Download } from 'lucide-react';
 import studentsData from '../../data/students.json';
 import attendanceData from '../../data/attendance.json';
-import { useTheme } from '../../contexts/ThemeContext';
-import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext.jsx';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 
 const FacultyDashboard = () => {
   const { user } = useAuth();
@@ -92,7 +92,7 @@ const FacultyDashboard = () => {
     // TODO: Add logic for CSV export
   };
 
-  user?.name = 'Guru Drona';
+  // user?.name = 'Guru Drona';
 
   return (
     <div className="space-y-6">

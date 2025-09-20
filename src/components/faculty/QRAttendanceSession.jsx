@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { QrCode, StopCircle, Clock, Users, CheckCircle } from 'lucide-react';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '../../contexts/ThemeContext.jsx';
 import qr from '../../images/qr.png';
 
 const QRAttendanceSession = ({ onStopSession }) => {
