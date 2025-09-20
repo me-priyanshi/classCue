@@ -1,94 +1,94 @@
 [
   {
     "id": 1,
-    "name": "Alice Johnson",
-    "studentId": "STU001",
-    "email": "alice.johnson@university.edu",
+    "name": "Priyanshi Bhanushali",
+    "studentId": "240173107003",
+    "email": "240173107003@vgec.ac.in",
     "attendance": {
       "totalClasses": 45,
       "present": 42,
       "absent": 3,
       "percentage": 93.3
     },
-    "subjects": ["Mathematics", "Physics", "Chemistry", "Computer Science"]
+    "subjects": ["ADA", "SE", "CN", "PDS"]
   },
   {
     "id": 2,
-    "name": "Bob Smith",
-    "studentId": "STU002",
-    "email": "bob.smith@university.edu",
+    "name": "Dipal Chudasama",
+    "studentId": "240173107007",
+    "email": "240173107007@vgec.ac.in",
     "attendance": {
       "totalClasses": 45,
       "present": 40,
       "absent": 5,
       "percentage": 88.9
     },
-    "subjects": ["Mathematics", "Physics", "Biology", "English"]
+    "subjects": ["ADA", "SE", "CN", "PDS"]
   },
   {
     "id": 3,
-    "name": "Carol Davis",
-    "studentId": "STU003",
-    "email": "carol.davis@university.edu",
+    "name": "Jiya Shah",
+    "studentId": "240173146015",
+    "email": "240173146015@vgec.ac.in",
     "attendance": {
       "totalClasses": 45,
       "present": 44,
       "absent": 1,
       "percentage": 97.8
     },
-    "subjects": ["Mathematics", "Chemistry", "Computer Science", "History"]
+    "subjects": ["ADA", "WT", "CN", "SEDA"]
   },
   {
     "id": 4,
-    "name": "David Wilson",
-    "studentId": "STU004",
-    "email": "david.wilson@university.edu",
+    "name": "Aryan Chalaliya",
+    "studentId": "240173107002",
+    "email": "240173107002@vgec.ac.in",
     "attendance": {
       "totalClasses": 45,
       "present": 38,
       "absent": 7,
       "percentage": 84.4
     },
-    "subjects": ["Physics", "Chemistry", "Biology", "English"]
+    "subjects": ["ADA", "SE", "CN", "PDS"]
   },
   {
     "id": 5,
-    "name": "Eva Brown",
-    "studentId": "STU005",
-    "email": "eva.brown@university.edu",
+    "name": "Vaibhav Dodiya",
+    "studentId": "240173107013",
+    "email": "240173107013@vgec.ac.in",
     "attendance": {
       "totalClasses": 45,
       "present": 43,
       "absent": 2,
       "percentage": 95.6
     },
-    "subjects": ["Mathematics", "Computer Science", "English", "History"]
+    "subjects": ["ADA", "SE", "CN", "PDS"]
   },
   {
     "id": 6,
-    "name": "Frank Miller",
-    "studentId": "STU006",
-    "email": "frank.miller@university.edu",
+    "name": "Khushi Rana",
+    "studentId": "250173107021",
+    "email": "250173107021@vgecg.ac.in",
     "attendance": {
       "totalClasses": 45,
       "present": 41,
       "absent": 4,
       "percentage": 91.1
     },
-    "subjects": ["Physics", "Biology", "Chemistry", "Computer Science"]
+    "subjects": ["P&S", "DS", "DBMS", "DF", "ETC", "IC"]
   },
   {
     "id": 7,
-    "name": "Grace Taylor",
-    "studentId": "STU007",
-    "email": "grace.taylor@university.edu",
+    "name": "Krisha Patel",
+    "studentId": "240173107021",
+    "email": "240173107021@vgec.ac.in",
     "attendance": {
       "totalClasses": 45,
       "present": 39,
       "absent": 6,
       "percentage": 86.7
     },
-    "subjects": ["Mathematics", "English", "History", "Biology"]
+    "subjects": ["ADA", "SE", "CN", "PDS"]
   },
   {
     "id": 8,
@@ -101,6 +101,6 @@
       "absent": 0,
       "percentage": 100.0
     },
-    "subjects": ["Mathematics", "Physics", "Chemistry", "Computer Science"]
+    "subjects": ["ADA", "SE", "CN", "PDS"]
   }
 ]

@@ -260,7 +260,7 @@ const Login = ({ onSignupClick }) => {
                       : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
                   }`}
                 >
-                  
+                  <GraduationCap className="w-6 h-6 mx-auto mb-2" />
                   <span className="font-medium">Faculty</span>
                 </button>
               </div>

@@ -12,6 +12,7 @@ import {
   BarChart3
 } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
+import ClassCueLogo from '../../images/ClassCueLogo.png';
 
 const UserAvatar = ({ user, theme }) => {
   const getInitials = (name) => {
@@ -97,8 +98,8 @@ const Navigation = ({ activeTab, setActiveTab }) => {
         <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0 px-4 mb-4">
-            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-              <Calendar className="w-5 h-5 text-white" />
+            <div className="w-9 h-9 bg-primary-600 rounded-lg flex items-center justify-center">
+              <img src={ClassCueLogo} alt='ClassCue' width={50} height={50}/>
             </div>
             <span className={`ml-2 text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>&nbsp;&nbsp;ClassCue</span>
           </div>
@@ -136,8 +137,8 @@ const Navigation = ({ activeTab, setActiveTab }) => {
       <div className={`block lg:hidden border-b border-gray-200 px-4 py-3 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-              <Calendar className="w-5 h-5 text-white" />
+            <div className="w-9 h-9 bg-primary-600 rounded-lg flex items-center justify-center">
+              <img src={ClassCueLogo} alt='ClassCue' width={40} height={40}/>
             </div>
             <span className={`ml-2 text-lg font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>ClassCue</span>
           </div>

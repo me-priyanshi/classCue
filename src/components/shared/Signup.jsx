@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import { User, GraduationCap, Eye, EyeOff } from 'lucide-react';
+import ClassCueLogo from '../../images/ClassCueLogo.png';
 
 const Signup = ({ onLoginClick }) => {
   const [formData, setFormData] = useState({
@@ -94,7 +95,7 @@ const Signup = ({ onLoginClick }) => {
         <div className="card">
           <div className="text-center mb-8">
             <div className="mx-auto w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mb-4">
-              <GraduationCap className="w-8 h-8 text-white" />
+              <img src={ClassCueLogo} alt='ClassCue'/>
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
               Sign Up

@@ -10,7 +10,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'pwa-192x192.png', 'pwa-512x512.png'],
       manifest: {
-        name: 'ClassCue - Smart Classroom Attendance',
+        name: 'ClassCue',
         short_name: 'ClassCue',
         description: 'Smart Curriculum Activity & Attendance App',
         theme_color: '#3b82f6',
