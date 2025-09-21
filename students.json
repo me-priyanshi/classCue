@@ -1,0 +1,106 @@
+[
+  {
+    "id": 1,
+    "name": "Priyanshi Bhanushali",
+    "studentId": "240173107003",
+    "email": "240173107003@vgec.ac.in",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 42,
+      "absent": 3,
+      "percentage": 93.3
+    },
+    "subjects": ["ADA", "SE", "CN", "PDS"]
+  },
+  {
+    "id": 2,
+    "name": "Dipal Chudasama",
+    "studentId": "240173107007",
+    "email": "240173107007@vgec.ac.in",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 40,
+      "absent": 5,
+      "percentage": 88.9
+    },
+    "subjects": ["ADA", "SE", "CN", "PDS"]
+  },
+  {
+    "id": 3,
+    "name": "Jiya Shah",
+    "studentId": "240173146015",
+    "email": "240173146015@vgec.ac.in",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 44,
+      "absent": 1,
+      "percentage": 97.8
+    },
+    "subjects": ["ADA", "WT", "CN", "SEDA"]
+  },
+  {
+    "id": 4,
+    "name": "Aryan Chalaliya",
+    "studentId": "240173107002",
+    "email": "240173107002@vgec.ac.in",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 38,
+      "absent": 7,
+      "percentage": 84.4
+    },
+    "subjects": ["ADA", "SE", "CN", "PDS"]
+  },
+  {
+    "id": 5,
+    "name": "Vaibhav Dodiya",
+    "studentId": "240173107013",
+    "email": "240173107013@vgec.ac.in",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 43,
+      "absent": 2,
+      "percentage": 95.6
+    },
+    "subjects": ["ADA", "SE", "CN", "PDS"]
+  },
+  {
+    "id": 6,
+    "name": "Khushi Rana",
+    "studentId": "250173107021",
+    "email": "250173107021@vgecg.ac.in",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 41,
+      "absent": 4,
+      "percentage": 91.1
+    },
+    "subjects": ["P&S", "DS", "DBMS", "DF", "ETC", "IC"]
+  },
+  {
+    "id": 7,
+    "name": "Krisha Patel",
+    "studentId": "240173107021",
+    "email": "240173107021@vgec.ac.in",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 39,
+      "absent": 6,
+      "percentage": 86.7
+    },
+    "subjects": ["ADA", "SE", "CN", "PDS"]
+  },
+  {
+    "id": 8,
+    "name": "Priti Samanta",
+    "studentId": "230170107121",
+    "email": "230170107121@vgec.ac.in",
+    "attendance": {
+      "totalClasses": 45,
+      "present": 45,
+      "absent": 0,
+      "percentage": 100.0
+    },
+    "subjects": ["ADA", "SE", "CN", "PDS"]
+  }
+]

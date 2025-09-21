@@ -1,0 +1,67 @@
+{
+  "today": {
+    "date": "2024-01-15",
+    "classes": [
+      {
+        "id": 1,
+        "subject": "ADA",
+        "teacher": "JMS",
+        "time": "09:00 - 10:00",
+        "room": "Room 101",
+        "students": [
+          { "id": 1, "name": "Priyanshi Bhanushali", "present": true, "time": "09:05" },
+          { "id": 2, "name": "Dipal Chudasama", "present": true, "time": "09:02" },
+          { "id": 3, "name": "Jiya Shah", "present": true, "time": "09:01" },
+          { "id": 4, "name": "Aryan Chalaliya", "present": false, "time": null },
+          { "id": 5, "name": "Vaibhav Dodiya", "present": true, "time": "09:03" },
+          { "id": 6, "name": "Khushi Rana", "present": true, "time": "09:04" },
+          { "id": 7, "name": "Krisha Patel", "present": true, "time": "09:02" },
+          { "id": 8, "name": "Priti Samanta", "present": true, "time": "09:00" }
+        ]
+      },
+      {
+        "id": 2,
+        "subject": "CN",
+        "teacher": "JMR",
+        "time": "10:15 - 11:15",
+        "room": "Lab 201",
+        "students": [
+          { "id": 1, "name": "Priyanshi Bhanushali", "present": true, "time": "10:16" },
+          { "id": 2, "name": "Dipal Chudasama", "present": true, "time": "10:17" },
+          { "id": 3, "name": "Jiya Shah", "present": true, "time": "10:15" },
+          { "id": 4, "name": "Aryan Chalaliya", "present": true, "time": "10:18" },
+          { "id": 5, "name": "Vaibhav Dodiya", "present": false, "time": null },
+          { "id": 6, "name": "Khushi Rana", "present": true, "time": "10:16" },
+          { "id": 7, "name": "Krisha Patel", "present": true, "time": "10:17" },
+          { "id": 8, "name": "Priti Samanta", "present": true, "time": "10:15" }
+        ]
+      },
+      {
+        "id": 3,
+        "subject": "SE",
+        "teacher": "AND",
+        "time": "11:30 - 12:30",
+        "room": "Room 102",
+        "students": [
+          { "id": 1, "name": "Priyanshi Bhanushali", "present": true, "time": "11:31" },
+          { "id": 2, "name": "Dipal Chudasama", "present": true, "time": "11:32" },
+          { "id": 3, "name": "Jiya Shah", "present": true, "time": "11:30" },
+          { "id": 4, "name": "Aryan Chalaliya", "present": true, "time": "11:33" },
+          { "id": 5, "name": "Vaibhav Dodiya", "present": true, "time": "11:31" },
+          { "id": 6, "name": "Khushi Rana", "present": false, "time": null },
+          { "id": 7, "name": "Krisha Patel", "present": true, "time": "11:32" },
+          { "id": 8, "name": "Priti Samanta", "present": true, "time": "11:30" }
+        ]
+      }
+    ]
+  },
+  "weekly": {
+    "week": "2025-W03",
+    "summary": {
+      "totalClasses": 15,
+      "averageAttendance": 87.5,
+      "topPerformers": ["Priti Samanta", "Jiya Shah", "Vaibhav Dodiya"],
+      "needsAttention": ["Aryan Chalaliya", "Krisha Patel"]
+    }
+  }
+}

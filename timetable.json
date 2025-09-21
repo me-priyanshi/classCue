@@ -1,0 +1,180 @@
+{
+  "monday": [
+    {
+      "id": 1,
+      "subject": "Mathematics",
+      "teacher": "Dr. Smith",
+      "time": "09:00 - 10:00",
+      "room": "Room 101",
+      "type": "lecture"
+    },
+    {
+      "id": 2,
+      "subject": "Physics",
+      "teacher": "Prof. Johnson",
+      "time": "10:15 - 11:15",
+      "room": "Lab 201",
+      "type": "practical"
+    },
+    {
+      "id": 3,
+      "subject": "English",
+      "teacher": "Ms. Davis",
+      "time": "11:30 - 12:30",
+      "room": "Room 102",
+      "type": "lecture"
+    },
+    {
+      "id": 4,
+      "subject": "Chemistry",
+      "teacher": "Dr. Wilson",
+      "time": "14:00 - 15:00",
+      "room": "Lab 202",
+      "type": "practical"
+    },
+    {
+      "id": 5,
+      "subject": "Computer Science",
+      "teacher": "Mr. Brown",
+      "time": "15:15 - 16:15",
+      "room": "Room 103",
+      "type": "lecture"
+    }
+  ],
+  "tuesday": [
+    {
+      "id": 6,
+      "subject": "Biology",
+      "teacher": "Dr. Miller",
+      "time": "09:00 - 10:00",
+      "room": "Lab 203",
+      "type": "practical"
+    },
+    {
+      "id": 7,
+      "subject": "History",
+      "teacher": "Prof. Taylor",
+      "time": "10:15 - 11:15",
+      "room": "Room 104",
+      "type": "lecture"
+    },
+    {
+      "id": 8,
+      "subject": "Mathematics",
+      "teacher": "Dr. Smith",
+      "time": "11:30 - 12:30",
+      "room": "Room 101",
+      "type": "tutorial"
+    },
+    {
+      "id": 9,
+      "subject": "Physical Education",
+      "teacher": "Coach Anderson",
+      "time": "14:00 - 15:00",
+      "room": "Gymnasium",
+      "type": "practical"
+    }
+  ],
+  "wednesday": [
+    {
+      "id": 10,
+      "subject": "Physics",
+      "teacher": "Prof. Johnson",
+      "time": "09:00 - 10:00",
+      "room": "Room 101",
+      "type": "lecture"
+    },
+    {
+      "id": 11,
+      "subject": "Chemistry",
+      "teacher": "Dr. Wilson",
+      "time": "10:15 - 11:15",
+      "room": "Room 102",
+      "type": "lecture"
+    },
+    {
+      "id": 12,
+      "subject": "English",
+      "teacher": "Ms. Davis",
+      "time": "11:30 - 12:30",
+      "room": "Room 103",
+      "type": "tutorial"
+    },
+    {
+      "id": 13,
+      "subject": "Computer Science",
+      "teacher": "Mr. Brown",
+      "time": "14:00 - 15:00",
+      "room": "Lab 201",
+      "type": "practical"
+    }
+  ],
+  "thursday": [
+    {
+      "id": 14,
+      "subject": "Mathematics",
+      "teacher": "Dr. Smith",
+      "time": "09:00 - 10:00",
+      "room": "Room 101",
+      "type": "lecture"
+    },
+    {
+      "id": 15,
+      "subject": "Biology",
+      "teacher": "Dr. Miller",
+      "time": "10:15 - 11:15",
+      "room": "Room 102",
+      "type": "lecture"
+    },
+    {
+      "id": 16,
+      "subject": "History",
+      "teacher": "Prof. Taylor",
+      "time": "11:30 - 12:30",
+      "room": "Room 103",
+      "type": "tutorial"
+    },
+    {
+      "id": 17,
+      "subject": "Physics",
+      "teacher": "Prof. Johnson",
+      "time": "14:00 - 15:00",
+      "room": "Lab 202",
+      "type": "practical"
+    }
+  ],
+  "friday": [
+    {
+      "id": 18,
+      "subject": "Chemistry",
+      "teacher": "Dr. Wilson",
+      "time": "09:00 - 10:00",
+      "room": "Room 101",
+      "type": "lecture"
+    },
+    {
+      "id": 19,
+      "subject": "Computer Science",
+      "teacher": "Mr. Brown",
+      "time": "10:15 - 11:15",
+      "room": "Room 102",
+      "type": "lecture"
+    },
+    {
+      "id": 20,
+      "subject": "English",
+      "teacher": "Ms. Davis",
+      "time": "11:30 - 12:30",
+      "room": "Room 103",
+      "type": "lecture"
+    },
+    {
+      "id": 21,
+      "subject": "Mathematics",
+      "teacher": "Dr. Smith",
+      "time": "14:00 - 15:00",
+      "room": "Room 101",
+      "type": "tutorial"
+    }
+  ]
+}
