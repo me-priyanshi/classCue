@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Users, CheckCircle, XCircle, Clock, Calendar, Download, Filter, FileText } from 'lucide-react';
-import attendanceData from '../../data/attendance.json';
-import studentsData from '../../data/students.json';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
+import { loadStudentsData, loadAttendanceData } from '../../utils/dataLoader.js';
 import QRAttendanceSession from './QRAttendanceSession';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';

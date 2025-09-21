@@ -1,0 +1,86 @@
+{
+  "academic": [
+    {
+      "id": 1,
+      "title": "Complete Mathematics Assignment",
+      "description": "Solve calculus problems from Chapter 5",
+      "priority": "high",
+      "estimatedTime": "2 hours",
+      "subject": "Mathematics"
+    },
+    {
+      "id": 2,
+      "title": "Physics Lab Report",
+      "description": "Write lab report for pendulum experiment",
+      "priority": "medium",
+      "estimatedTime": "1.5 hours",
+      "subject": "Physics"
+    },
+    {
+      "id": 3,
+      "title": "Chemistry Project",
+      "description": "Research on organic compounds",
+      "priority": "high",
+      "estimatedTime": "3 hours",
+      "subject": "Chemistry"
+    },
+    {
+      "id": 4,
+      "title": "Programming Exercise",
+      "description": "Implement sorting algorithms in Python",
+      "priority": "medium",
+      "estimatedTime": "2.5 hours",
+      "subject": "Computer Science"
+    },
+    {
+      "id": 5,
+      "title": "English Essay",
+      "description": "Write essay on climate change",
+      "priority": "low",
+      "estimatedTime": "1 hour",
+      "subject": "English"
+    }
+  ],
+  "personal": [
+    {
+      "id": 6,
+      "title": "Exercise Routine",
+      "description": "30 minutes of cardio and strength training",
+      "priority": "medium",
+      "estimatedTime": "30 minutes",
+      "category": "Health"
+    },
+    {
+      "id": 7,
+      "title": "Read Book",
+      "description": "Read 2 chapters of 'Atomic Habits'",
+      "priority": "low",
+      "estimatedTime": "45 minutes",
+      "category": "Personal Development"
+    },
+    {
+      "id": 8,
+      "title": "Practice Guitar",
+      "description": "Learn new song chords",
+      "priority": "low",
+      "estimatedTime": "1 hour",
+      "category": "Hobby"
+    },
+    {
+      "id": 9,
+      "title": "Meditation",
+      "description": "10 minutes of mindfulness meditation",
+      "priority": "medium",
+      "estimatedTime": "10 minutes",
+      "category": "Wellness"
+    },
+    {
+      "id": 10,
+      "title": "Organize Study Space",
+      "description": "Clean and organize desk and study materials",
+      "priority": "low",
+      "estimatedTime": "20 minutes",
+      "category": "Organization"
+    }
+  ]
+}

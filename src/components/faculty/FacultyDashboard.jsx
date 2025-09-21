@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import QRCodeAttendance from '../shared/QRCodeAttendance';
 import { Users, CheckCircle, XCircle, Clock, TrendingUp, Download, FileText } from 'lucide-react';
-import studentsData from '../../data/students.json';
-import attendanceData from '../../data/attendance.json';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 import { useAuth } from '../../contexts/AuthContext.jsx';
+import { loadStudentsData, loadAttendanceData } from '../../utils/dataLoader.js';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -26,11 +25,29 @@ const FacultyDashboard = () => {
     absentToday: 0,
     averageAttendance: 0
   });
+  const [studentsData, setStudentsData] = useState([]);
+  const [attendanceData, setAttendanceData] = useState({ today: { classes: [] }, weekly: { summary: {} } });
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
+
+    // Load data
+    const loadData = async () => {
+      const students = await loadStudentsData();
+      const attendance = await loadAttendanceData();
+      setStudentsData(students);
+      setAttendanceData(attendance);
+    };
+    
+    loadData();
+
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    if (studentsData.length === 0 || attendanceData.today.classes.length === 0) return;
 
     const todayClasses = attendanceData.today.classes;
     const allStudents = studentsData;
@@ -59,9 +76,7 @@ const FacultyDashboard = () => {
     });
 
     setTodayAttendance(todayClasses);
-
-    return () => clearInterval(timer);
-  }, []);
+  }, [studentsData, attendanceData]);
 
   const getGreeting = () => {
     const hour = new Date().getHours();

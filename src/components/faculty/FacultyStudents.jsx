@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Users, Search, Filter, Download, Mail, Phone, TrendingUp, TrendingDown } from 'lucide-react';
-import studentsData from '../../data/students.json';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
+import { loadStudentsData } from '../../utils/dataLoader.js';
 
 const FacultyStudents = () => {
   const [searchTerm, setSearchTerm] = useState('');

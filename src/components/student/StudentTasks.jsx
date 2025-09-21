@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Target, Clock, BookOpen, CheckCircle, AlertCircle, Plus, Filter } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
-import tasksData from '../../data/tasks.json';
-
+import { loadTasksData } from '../../utils/dataLoader.js';
 const StudentTasks = () => {
   const { theme } = useTheme();
   const [selectedCategory, setSelectedCategory] = useState('all');
