@@ -5,6 +5,8 @@ import { loadStudentsData, loadAttendanceData } from '../../utils/dataLoader.js'
 import QRAttendanceSession from './QRAttendanceSession';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import attendanceData from '../../../public/attendance.json';
+import studentsData from '../../../public/students.json';
 
 const FacultyAttendance = () => {
   const { theme } = useTheme();

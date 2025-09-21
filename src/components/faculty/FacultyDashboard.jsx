@@ -6,6 +6,8 @@ import { useAuth } from '../../contexts/AuthContext.jsx';
 import { loadStudentsData, loadAttendanceData } from '../../utils/dataLoader.js';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import studentsData from '../../../public/students.json';
+import attendanceData from '../../../public/attendance.json';
 
 const FacultyDashboard = () => {
   const { user } = useAuth();
