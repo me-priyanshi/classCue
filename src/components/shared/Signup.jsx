@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import { User, GraduationCap, Eye, EyeOff } from 'lucide-react';
 import ClassCueLogo from '../../images/ClassCueLogo.png';
+import { Select } from '@mobiscroll/react-lite';
+import '@mobiscroll/react-lite/dist/css/mobiscroll.min.css';
 
 const Signup = ({ onLoginClick }) => {
   const [formData, setFormData] = useState({
@@ -20,6 +22,7 @@ const Signup = ({ onLoginClick }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const auth = useAuth();
+  const [selectedValues, setSelectedValues] = useState([]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -45,6 +48,20 @@ const Signup = ({ onLoginClick }) => {
     // 12 digits only
     return /^[0-9]{12}$/.test(enrollment);
   };
+
+
+  const myData = [
+      { text: 'Books', value: 1 },
+      { text: 'Movies, Music & Games', value: 2 },
+      { text: 'Electronics & Computers', value: 3 },
+      { text: 'Home, Garden & Tools', value: 4 },
+      { text: 'Health & Beauty', value: 5 },
+      { text: 'Toys, Kids & Baby', value: 6 },
+      { text: 'Clothing & Jewelry', value: 7 },
+      { text: 'Sports & Outdoors', value: 8 },
+      { text: 'Automotive & Industrial', value: 9 }
+  ];
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -269,14 +286,13 @@ const Signup = ({ onLoginClick }) => {
                 <label htmlFor="interests" className="block text-sm font-medium text-gray-700 mb-2">
                   Interests
                 </label>
-                <textarea
-                    id="interests"
-                    name="interests"
-                    value={formData.interests}
-                    onChange={handleInputChange}
-                    className="input-field pr-10"
-                    placeholder="Enter your interest areas"
-                  />
+                <Select
+                  data={myData}
+                  selectMultiple={true}
+                  touchUi={false}
+                  value={selectedValues}
+                  onChange={(event) => setSelectedValues(event.value)}
+                />
                 </div>
                 <div>
                   <label htmlFor="skills" className="block text-sm font-medium text-gray-700 mb-2">
