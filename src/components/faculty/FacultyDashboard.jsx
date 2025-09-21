@@ -3,11 +3,13 @@ import QRCodeAttendance from '../shared/QRCodeAttendance';
 import { Users, CheckCircle, XCircle, Clock, TrendingUp, Download, FileText } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 import { useAuth } from '../../contexts/AuthContext.jsx';
-import { loadStudentsData, loadAttendanceData } from '../../utils/dataLoader.js';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { loadTasksData, loadAttendanceData, loadTimetableData } from '../../utils/dataLoader.js';
 import studentsData from '../../../public/students.json';
 import attendanceData from '../../../public/attendance.json';
+import timetableData from '../../../public/timetable.json';
+import tasksData from '../../../public/tasks.json';
 
 const FacultyDashboard = () => {
   const { user } = useAuth();

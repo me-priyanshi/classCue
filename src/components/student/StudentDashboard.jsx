@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Clock, Calendar, CheckCircle, AlertCircle, BookOpen, Target } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import { loadTasksData, loadAttendanceData, loadTimetableData } from '../../utils/dataLoader.js';
+import studentsData from '../../../public/students.json';
+import attendanceData from '../../../public/attendance.json';
+import timetableData from '../../../public/timetable.json';
+import tasksData from '../../../public/tasks.json';
 
 const StudentDashboard = () => {
   const { user } = useAuth();

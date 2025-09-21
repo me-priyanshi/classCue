@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Users, Search, Filter, Download, Mail, Phone, TrendingUp, TrendingDown } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
-import { loadStudentsData } from '../../utils/dataLoader.js';
+import { loadTasksData, loadAttendanceData, loadTimetableData } from '../../utils/dataLoader.js';
+import studentsData from '../../../public/students.json';
+import attendanceData from '../../../public/attendance.json';
+import timetableData from '../../../public/timetable.json';
+import tasksData from '../../../public/tasks.json';
 
 const FacultyStudents = () => {
   const [searchTerm, setSearchTerm] = useState('');

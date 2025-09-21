@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Users, CheckCircle, XCircle, Clock, Calendar, Download, Filter, FileText } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
-import { loadStudentsData, loadAttendanceData } from '../../utils/dataLoader.js';
 import QRAttendanceSession from './QRAttendanceSession';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import attendanceData from '../../../public/attendance.json';
+import { loadTasksData, loadAttendanceData, loadTimetableData } from '../../utils/dataLoader.js';
 import studentsData from '../../../public/students.json';
+import attendanceData from '../../../public/attendance.json';
+import timetableData from '../../../public/timetable.json';
+import tasksData from '../../../public/tasks.json';
 
 const FacultyAttendance = () => {
   const { theme } = useTheme();
