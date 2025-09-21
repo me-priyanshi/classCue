@@ -5,7 +5,7 @@ import { useTheme } from '../../contexts/ThemeContext.jsx';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import { loadTasksData, loadAttendanceData, loadTimetableData } from '../../utils/dataLoader.js';
+import { loadStudentsData, loadTasksData, loadAttendanceData, loadTimetableData } from '../../utils/dataLoader.js';
 import studentsData from '../../../public/students.json';
 import attendanceData from '../../../public/attendance.json';
 import timetableData from '../../../public/timetable.json';
