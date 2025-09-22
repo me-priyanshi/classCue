@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import { User, GraduationCap, Eye, EyeOff } from 'lucide-react';
 import ClassCueLogo from '../../images/ClassCueLogo.png';
-import { Select } from '@mobiscroll/react-lite';
-import '@mobiscroll/react-lite/dist/css/mobiscroll.min.css';
+import Select from 'react-select';
 
 const Signup = ({ onLoginClick }) => {
   const [formData, setFormData] = useState({
@@ -13,22 +12,91 @@ const Signup = ({ onLoginClick }) => {
     password: '',
     confirmPassword: '',
     role: 'student',
-    interests: '',
-    skills: '',
-    goals: ''
+    interests: [],
+    skills: [],
+    goals: []
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const auth = useAuth();
-  const [selectedValues, setSelectedValues] = useState([]);
+
+  // Data for select inputs
+  const interestsData = [
+    { text: 'Programming', value: 'programming' },
+    { text: 'Web Development', value: 'web-dev' },
+    { text: 'Artificial Intelligence', value: 'ai' },
+    { text: 'Machine Learning', value: 'ml' },
+    { text: 'Data Science', value: 'data-science' },
+    { text: 'Cybersecurity', value: 'cybersecurity' },
+    { text: 'Mobile Development', value: 'mobile-dev' },
+    { text: 'Cloud Computing', value: 'cloud' },
+    { text: 'DevOps', value: 'devops' }
+  ];
+
+  const skillsData = [
+    { text: 'Python', value: 'python' },
+    { text: 'JavaScript', value: 'javascript' },
+    { text: 'Java', value: 'java' },
+    { text: 'C++', value: 'cpp' },
+    { text: 'React', value: 'react' },
+    { text: 'Node.js', value: 'nodejs' },
+    { text: 'SQL', value: 'sql' },
+    { text: 'Git', value: 'git' },
+    { text: 'Docker', value: 'docker' }
+  ];
+
+  const goalsData = [
+    { text: 'Learn New Technologies', value: 'learn-tech' },
+    { text: 'Build Projects', value: 'build-projects' },
+    { text: 'Get Internship', value: 'internship' },
+    { text: 'Improve Problem Solving', value: 'problem-solving' },
+    { text: 'Master Programming Language', value: 'master-lang' },
+    { text: 'Contribute to Open Source', value: 'open-source' },
+    { text: 'Network with Peers', value: 'networking' },
+    { text: 'Research Opportunities', value: 'research' }
+  ];
+
+  const customSelectStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      borderColor: state.isFocused ? '#6366f1' : '#d1d5db',
+      boxShadow: state.isFocused ? '0 0 0 1px #6366f1' : 'none',
+      '&:hover': {
+        borderColor: '#6366f1'
+      }
+    }),
+    multiValue: (provided) => ({
+      ...provided,
+      backgroundColor: '#e0e7ff',
+    }),
+    multiValueLabel: (provided) => ({
+      ...provided,
+      color: '#4f46e5',
+    }),
+    multiValueRemove: (provided) => ({
+      ...provided,
+      color: '#4f46e5',
+      '&:hover': {
+        backgroundColor: '#c7d2fe',
+        color: '#4338ca',
+      },
+    }),
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handleSelectChange = (name) => (event) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: event.value
     }));
   };
 
@@ -48,20 +116,6 @@ const Signup = ({ onLoginClick }) => {
     // 12 digits only
     return /^[0-9]{12}$/.test(enrollment);
   };
-
-
-  const myData = [
-      { text: 'Books', value: 1 },
-      { text: 'Movies, Music & Games', value: 2 },
-      { text: 'Electronics & Computers', value: 3 },
-      { text: 'Home, Garden & Tools', value: 4 },
-      { text: 'Health & Beauty', value: 5 },
-      { text: 'Toys, Kids & Baby', value: 6 },
-      { text: 'Clothing & Jewelry', value: 7 },
-      { text: 'Sports & Outdoors', value: 8 },
-      { text: 'Automotive & Industrial', value: 9 }
-  ];
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -287,38 +341,82 @@ const Signup = ({ onLoginClick }) => {
                   Interests
                 </label>
                 <Select
-                  data={myData}
-                  selectMultiple={true}
-                  touchUi={false}
-                  value={selectedValues}
-                  onChange={(event) => setSelectedValues(event.value)}
+                  isMulti
+                  name="interests"
+                  id="interests"
+                  options={interestsData.map(item => ({
+                    value: item.value,
+                    label: item.text
+                  }))}
+                  value={formData.interests.map(value => ({
+                    value,
+                    label: interestsData.find(item => item.value === value)?.text
+                  }))}
+                  onChange={(selected) => {
+                    setFormData(prev => ({
+                      ...prev,
+                      interests: selected ? selected.map(item => item.value) : []
+                    }));
+                  }}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                  styles={customSelectStyles}
+                  placeholder="Select your interests"
                 />
                 </div>
                 <div>
                   <label htmlFor="skills" className="block text-sm font-medium text-gray-700 mb-2">
                     Skills
                   </label>
-                  <textarea
-                      id="skills"
-                      name="skills"
-                      value={formData.skills}
-                      onChange={handleInputChange}
-                      className="input-field pr-10"
-                      placeholder="Enter your skills areas"
-                    />
+                  <Select
+                    isMulti
+                    name="skills"
+                    id="skills"
+                    options={skillsData.map(item => ({
+                      value: item.value,
+                      label: item.text
+                    }))}
+                    value={formData.skills.map(value => ({
+                      value,
+                      label: skillsData.find(item => item.value === value)?.text
+                    }))}
+                    onChange={(selected) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        skills: selected ? selected.map(item => item.value) : []
+                      }));
+                    }}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    placeholder="Select your skills"
+                  />
                 </div>
                 <div>
                   <label htmlFor="goals" className="block text-sm font-medium text-gray-700 mb-2">
                     Goals
                   </label>
-                  <textarea
-                      id="goals"
-                      name="goals"
-                      value={formData.goals}
-                      onChange={handleInputChange}
-                      className="input-field pr-10"
-                      placeholder="Enter your goals"
-                    />
+                  <Select
+                    isMulti
+                    name="goals"
+                    id="goals"
+                    options={goalsData.map(item => ({
+                      value: item.value,
+                      label: item.text
+                    }))}
+                    value={formData.goals.map(value => ({
+                      value,
+                      label: goalsData.find(item => item.value === value)?.text
+                    }))}
+                    onChange={(selected) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        goals: selected ? selected.map(item => item.value) : []
+                      }));
+                    }}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    placeholder="Select your goals"
+                  />
                 </div>
               </>
             ): null}
