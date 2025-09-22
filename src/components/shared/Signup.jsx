@@ -348,10 +348,10 @@ const Signup = ({ onLoginClick }) => {
                     value: item.value,
                     label: item.text
                   }))}
-                  value={formData.interests.map(value => ({
+                  value={formData.interests ? formData.interests.map(value => ({
                     value,
                     label: interestsData.find(item => item.value === value)?.text
-                  }))}
+                  })) : []}
                   onChange={(selected) => {
                     setFormData(prev => ({
                       ...prev,
@@ -376,10 +376,10 @@ const Signup = ({ onLoginClick }) => {
                       value: item.value,
                       label: item.text
                     }))}
-                    value={formData.skills.map(value => ({
+                    value={formData.skills ? formData.skills.map(value => ({
                       value,
                       label: skillsData.find(item => item.value === value)?.text
-                    }))}
+                    })) : []}
                     onChange={(selected) => {
                       setFormData(prev => ({
                         ...prev,
@@ -403,10 +403,10 @@ const Signup = ({ onLoginClick }) => {
                       value: item.value,
                       label: item.text
                     }))}
-                    value={formData.goals.map(value => ({
+                    value={formData.goals ? formData.goals.map(value => ({
                       value,
                       label: goalsData.find(item => item.value === value)?.text
-                    }))}
+                    })) : []}
                     onChange={(selected) => {
                       setFormData(prev => ({
                         ...prev,
