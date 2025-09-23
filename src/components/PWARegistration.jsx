@@ -75,20 +75,21 @@ const PWARegistration = () => {
   if (isInstalled) return null;
 
   return (
-    <div
-      style={{ position: 'fixed', bottom: '16px', right: '16px', zIndex: 50 }}
-      aria-hidden={!showInstallButton}
-    >
-      {showInstallButton && (
-        <button
-          onClick={handleInstallClick}
-          className="button"
-          style={{ minWidth: '120px' }}
-        >
-          Download
-        </button>
-      )}
-    </div>
+    // <div
+    //   style={{ position: 'fixed', bottom: '16px', right: '16px', zIndex: 50 }}
+    //   aria-hidden={!showInstallButton}
+    // >
+    //   {showInstallButton && (
+    //     <button
+    //       onClick={handleInstallClick}
+    //       className="button"
+    //       style={{ minWidth: '120px' }}
+    //     >
+    //       Download not now
+    //     </button>
+    //   )}
+    // </div>
+    <></>
   );
 };
 

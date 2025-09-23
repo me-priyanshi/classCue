@@ -206,7 +206,7 @@ const Login = ({ onSignupClick }) => {
             minWidth: '80px'
           }}
         >
-          <span>Download</span>
+          <span>Download &nbsp; </span>
         </button>
       )}
       
