@@ -73,6 +73,16 @@ const Navigation = ({ activeTab, setActiveTab }) => {
     return (
       <button
         onClick={() => {
+          const leavingSettings = activeTab === 'settings' && item.id !== 'settings';
+          if (leavingSettings) {
+            let hasUnsaved = false;
+            try { hasUnsaved = localStorage.getItem('settingsHasUnsaved') === '1'; } catch (_) {}
+            if (hasUnsaved) {
+              const proceed = window.confirm('You have unsaved changes in Settings. Discard and leave?');
+              if (!proceed) return;
+              window.dispatchEvent(new Event('settings:discard'));
+            }
+          }
           setActiveTab(item.id);
           if (isMobile) setIsMobileMenuOpen(false);
         }}

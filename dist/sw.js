@@ -1,12 +1,13 @@
 // Service Worker for ClassCue PWA
 const CACHE_NAME = 'classcue-v2';
+const BASE_PATH = '/classCue';
 const urlsToCache = [
-  '/',
-  '/manifest.json',
-  '/pwa-192x192.png',
-  '/pwa-512x512.png',
-  '/apple-touch-icon.png',
-  '/favicon.ico'
+  BASE_PATH + '/',
+  BASE_PATH + '/manifest.json',
+  BASE_PATH + '/pwa-192x192.png',
+  BASE_PATH + '/pwa-512x512.png',
+  BASE_PATH + '/apple-touch-icon.png',
+  BASE_PATH + '/favicon.ico'
 ];
 
 // Install event
