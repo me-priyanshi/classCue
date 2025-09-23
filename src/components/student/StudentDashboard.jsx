@@ -6,6 +6,7 @@ import studentsData from '../../../public/students.json';
 import attendanceData from '../../../public/attendance.json';
 import timetableData from '../../../public/timetable.json';
 import tasksData from '../../../public/tasks.json';
+import StudentProfilePrompt from './StudentProfilePrompt.jsx';
 
 const StudentDashboard = () => {
   const { user } = useAuth();
@@ -14,6 +15,7 @@ const StudentDashboard = () => {
   const [currentClass, setCurrentClass] = useState(null);
   const [nextClass, setNextClass] = useState(null);
   const [freePeriods, setFreePeriods] = useState([]);
+  const [showProfilePrompt, setShowProfilePrompt] = useState(false);
 
   // useEffect(() => {
   //   const timer = setInterval(() => {
@@ -88,6 +90,15 @@ const StudentDashboard = () => {
 
   const attendanceStatus = getAttendanceStatus();
 
+  useEffect(() => {
+    if (user?.role === 'student') {
+      const hasInterests = Array.isArray(user?.interests) && user.interests.length > 0;
+      const hasSkills = Array.isArray(user?.skills) && user.skills.length > 0;
+      const hasGoals = Array.isArray(user?.goals) && user.goals.length > 0;
+      setShowProfilePrompt(!(hasInterests && hasSkills && hasGoals));
+    }
+  }, [user]);
+
   const getRecommendedTasks = () => {
     const currentHour = new Date().getHours();
     const academicTasks = tasksData.academic.slice(0, 3);
@@ -115,6 +126,7 @@ const StudentDashboard = () => {
 
   return (
     <div className="space-y-6">
+      <StudentProfilePrompt isOpen={showProfilePrompt} onClose={() => setShowProfilePrompt(false)} />
       {/* Welcome Header */}
       <div className="card">
         <div className="flex items-center justify-between">

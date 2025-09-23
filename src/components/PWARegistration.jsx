@@ -1,102 +1,94 @@
 import { useEffect, useState } from 'react';
-import InstallInstructions from './InstallInstructions.jsx';
 
 const PWARegistration = () => {
-  const [showInstallInstructions, setShowInstallInstructions] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
   const [showInstallButton, setShowInstallButton] = useState(false);
 
   useEffect(() => {
-    // Check if app is already installed
+    // Hide when running standalone
     if (window.matchMedia('(display-mode: standalone)').matches) {
       setIsInstalled(true);
       return;
     }
 
-    // Register service worker
+    // Register SW (respect base path if set by Vite)
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then((registration) => {
-            console.log('SW registered: ', registration);
-          })
-          .catch((registrationError) => {
-            console.log('SW registration failed: ', registrationError);
-          });
-      });
+      const base = import.meta.env.BASE_URL || '/';
+      const swUrl = `${base}sw.js`;
+      navigator.serviceWorker.register(swUrl).catch(() => {});
     }
 
-    // Handle PWA install prompt
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      console.log('PWA install prompt triggered');
+    // Capture install prompt
+    const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
-      deferredPrompt = e;
-      window.deferredPrompt = deferredPrompt;
+      window.deferredPrompt = e;
       setShowInstallButton(true);
-    });
-
-    // Handle successful installation
-    window.addEventListener('appinstalled', () => {
-      console.log('PWA was installed');
+    };
+    const handleAppInstalled = () => {
       setIsInstalled(true);
       setShowInstallButton(false);
-    });
+      window.deferredPrompt = null;
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
 
-    // Check if install prompt is available after a delay
-    setTimeout(() => {
-      if (!isInstalled && !showInstallButton) {
-        // Show manual install instructions if no automatic prompt
-        setShowInstallInstructions(true);
-      }
-    }, 3000);
+    // Always show the button if not installed
+    setShowInstallButton(true);
 
-  }, [isInstalled, showInstallButton]);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
+  }, []);
 
-  const handleInstallClick = () => {
-    if (window.deferredPrompt) {
-      window.deferredPrompt.prompt();
-      window.deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
-        } else {
-          console.log('User dismissed the install prompt');
-          // Show manual instructions if user dismisses
-          setShowInstallInstructions(true);
-        }
-        window.deferredPrompt = null;
-        setShowInstallButton(false);
-      });
+  const handleInstallClick = async () => {
+    const promptEvent = window.deferredPrompt;
+    const ua = navigator.userAgent || '';
+    const vendor = navigator.vendor || '';
+    const isEdge = /Edg\//.test(ua);
+    const isChrome = /Chrome\//.test(ua) && !isEdge && /Google Inc/.test(vendor);
+
+    if (promptEvent) {
+      promptEvent.prompt();
+      try { await promptEvent.userChoice; } catch (_) {}
+      window.deferredPrompt = null;
+      return;
+    }
+
+    // If Chrome or Edge: do not show one-line instructions, rely on native prompt only
+    if (isChrome || isEdge) {
+      return;
+    }
+
+    // For all other browsers, show minimal one-line hint
+    const isIOS = /iPad|iPhone|iPod/.test(ua);
+    const isAndroid = /Android/.test(ua);
+    if (isIOS) {
+      alert('Add to Home Screen: Share button → "Add to Home Screen"');
+    } else if (isAndroid) {
+      alert('Install app: Browser menu (⋮) → "Install app"');
     } else {
-      // Show manual instructions if no prompt available
-      setShowInstallInstructions(true);
+      alert('Install app: Use the install icon in your browser address bar.');
     }
   };
 
-  if (isInstalled) {
-    return null;
-  }
+  if (isInstalled) return null;
 
   return (
-    <>
-      {/* Installation guide button - positioned for mobile */}
-      {!isInstalled && (
+    <div
+      style={{ position: 'fixed', bottom: '16px', right: '16px', zIndex: 50 }}
+      aria-hidden={!showInstallButton}
+    >
+      {showInstallButton && (
         <button
-          onClick={() => setShowInstallInstructions(true)}
-          className="fixed top-4 left-4 bg-green-600 text-white px-3 py-2 rounded-lg shadow-lg hover:bg-green-700 transition-colors z-40 flex items-center space-x-2 text-sm sm:top-20 sm:right-4 sm:left-auto sm:px-4 sm:text-base"
+          onClick={handleInstallClick}
+          className="button"
+          style={{ minWidth: '120px' }}
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="hidden sm:inline">Install Guide</span>
-          <span className="sm:hidden">Guide</span>
+          Download
         </button>
       )}
-
-      {showInstallInstructions && (
-        <InstallInstructions onClose={() => setShowInstallInstructions(false)} />
-      )}
-    </>
+    </div>
   );
 };
 

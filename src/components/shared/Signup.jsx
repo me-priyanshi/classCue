@@ -309,7 +309,7 @@ const Signup = ({ onLoginClick }) => {
                 <label htmlFor="semester" className="block text-sm font-medium text-gray-700 mb-2">
                   Semester
                 </label>
-                <select className="input-field pr-10" id="semester" name="semester">
+                <select className="select input-field pr-10 text-gray-700" id="semester" name="semester">
                   <option value="" disabled selected>Select your semester</option>
                   <option value="first">1</option>
                   <option value="second">2</option>
@@ -325,7 +325,7 @@ const Signup = ({ onLoginClick }) => {
                 <label htmlFor="branch" className="block text-sm font-medium text-gray-700 mb-2">
                   Branch
                 </label>
-                <select className="input-field pr-10" id="branch" name="branch" required>
+                <select className="select input-field pr-10 text-gray-700" id="branch" name="branch" required>
                   <option value="" disabled selected>Select your branch</option>
                   <option value="ce">Computer Engineering</option>
                   <option value="cse">Computer Science & Engineering (Data Science)</option>
@@ -358,9 +358,50 @@ const Signup = ({ onLoginClick }) => {
                       interests: selected ? selected.map(item => item.value) : []
                     }));
                   }}
-                  className="basic-multi-select"
-                  classNamePrefix="select"
-                  styles={customSelectStyles}
+                  className="basic-multi-select input-field"
+                  classNamePrefix="dropdown"
+                  styles={{
+                      control: (base) => ({
+                        ...base,
+                        backgroundColor: 'gray-200', 
+                        // color: '#fff',
+                        minHeight: '40px',
+                        boxShadow: 'none',
+                        border: '0px'
+                      }),
+                      menuList: (base) => ({
+                        ...base,
+                        backgroundColor: '#2a2a2a',
+                        padding: '0px',
+                        // color: '#fff',
+                      }),
+                      option: (base, state) => ({
+                        ...base,
+                        backgroundColor: state.isSelected
+                          ? '#26a166ff' // selected option
+                          : state.isFocused
+                          ? '#202f3fff' // hovered option
+                          : '#0A1929', // default
+                        color: '#fff',
+                        transition: 'background-color 0.2s ease',
+                      }),
+                      multiValue: (base) => ({
+                        ...base,
+                        backgroundColor: '#333',
+                      }),
+                      multiValueLabel: (base) => ({
+                        ...base,
+                        color: '#fff',
+                      }),
+                      placeholder: (base) => ({
+                        ...base,
+                        // color: '#aaa',
+                      }),
+                      indicatorSeparator: () => ({
+                        display: 'none',
+                      }),
+                    }}
+                  // styles={customSelectStyles}
                   placeholder="Select your interests"
                 />
                 </div>
@@ -386,8 +427,49 @@ const Signup = ({ onLoginClick }) => {
                         skills: selected ? selected.map(item => item.value) : []
                       }));
                     }}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
+                    className="select basic-multi-select input-field"
+                    classNamePrefix="dropdown"
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        backgroundColor: 'gray-200', 
+                        // color: '#fff',
+                        minHeight: '40px',
+                        boxShadow: 'none',
+                        border: '0px'
+                      }),
+                      menuList: (base) => ({
+                        ...base,
+                        backgroundColor: '#2a2a2a',
+                        padding: '0px',
+                        // color: '#fff',
+                      }),
+                      option: (base, state) => ({
+                        ...base,
+                        backgroundColor: state.isSelected
+                          ? '#26a166ff' // selected option
+                          : state.isFocused
+                          ? '#202f3fff' // hovered option
+                          : '#0A1929', // default
+                        color: '#fff',
+                        transition: 'background-color 0.2s ease',
+                      }),
+                      multiValue: (base) => ({
+                        ...base,
+                        backgroundColor: '#333',
+                      }),
+                      multiValueLabel: (base) => ({
+                        ...base,
+                        color: '#fff',
+                      }),
+                      placeholder: (base) => ({
+                        ...base,
+                        // color: '#aaa',
+                      }),
+                      indicatorSeparator: () => ({
+                        display: 'none',
+                      }),
+                    }}
                     placeholder="Select your skills"
                   />
                 </div>
@@ -413,8 +495,49 @@ const Signup = ({ onLoginClick }) => {
                         goals: selected ? selected.map(item => item.value) : []
                       }));
                     }}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
+                    className="select basic-multi-select input-field"
+                    classNamePrefix="dropdown"
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        backgroundColor: 'gray-200', 
+                        // color: '#fff',
+                        minHeight: '40px',
+                        boxShadow: 'none',
+                        border: '0px'
+                      }),
+                      menuList: (base) => ({
+                        ...base,
+                        backgroundColor: '#2a2a2a',
+                        padding: '0px',
+                        // color: '#fff',
+                      }),
+                      option: (base, state) => ({
+                        ...base,
+                        backgroundColor: state.isSelected
+                          ? '#26a166ff' // selected option
+                          : state.isFocused
+                          ? '#202f3fff' // hovered option
+                          : '#0A1929', // default
+                        color: '#fff',
+                        transition: 'background-color 0.2s ease',
+                      }),
+                      multiValue: (base) => ({
+                        ...base,
+                        backgroundColor: '#333',
+                      }),
+                      multiValueLabel: (base) => ({
+                        ...base,
+                        color: '#fff',
+                      }),
+                      placeholder: (base) => ({
+                        ...base,
+                        // color: '#aaa',
+                      }),
+                      indicatorSeparator: () => ({
+                        display: 'none',
+                      }),
+                    }}
                     placeholder="Select your goals"
                   />
                 </div>

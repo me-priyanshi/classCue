@@ -14,6 +14,8 @@ const Login = ({ onSignupClick }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showInstallButton, setShowInstallButton] = useState(false);
+  const [error, setError] = useState('');
+  const [showToast, setShowToast] = useState(false);
   
   // Check if device is mobile on component mount
   const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -139,37 +141,48 @@ const Login = ({ onSignupClick }) => {
     }
   };
 
+  const [remember, setRemember] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
+    setShowToast(false);
 
     try {
       // Simulate API call
       const userData = formData.role === 'student' 
         ? {
             id: formData.enrollment || 'STU001',
-            name: 'Raja Ram',
+            name: 'shishya',
             enrollment: formData.enrollment,
             role: 'student',
             avatar: `https://ui-avatars.com/api/?name=Raja+Ram&background=3b82f6&color=fff`
           }
         : {
             id: 'FAC001',
-            name: 'Guru Drona',
+            name: 'guru',
             email: formData.email,
             role: 'faculty',
             avatar: `https://ui-avatars.com/api/?name=Guru+Drona&background=3b82f6&color=fff`
           };
 
       await new Promise(resolve => setTimeout(resolve, 1000));
-      login(userData);
-      
-      // Navigate to home after successful login
-      if(formData.email === 'facultyemail@gmail.com' || formData.enrollment === '123456789012') {
-        navigate('/');
+      // Demo validation - replace with real auth
+      const isValid = (formData.role === 'faculty' && formData.email === 'facultyemail@gmail.com') ||
+                      (formData.role === 'student' && formData.enrollment === '123456789012');
+
+      if (!isValid) {
+        throw new Error('Failed to sign in. Please enter correct credentials.');
       }
+
+      login(userData, remember);
+      navigate('/');
     } catch (error) {
       console.error('Login failed:', error);
+      setError(error?.message || 'Failed to sign in. Please enter correct credentials.');
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 4000);
     } finally {
       setIsLoading(false);
     }
@@ -315,6 +328,19 @@ const Login = ({ onSignupClick }) => {
               </div>
             </div>
 
+            {/* Remember Me */}
+            <div className="flex items-center justify-between">
+              <label className="flex items-center text-sm text-gray-700">
+                <input
+                  type="checkbox"
+                  className="mr-2 h-4 w-4"
+                  checked={remember}
+                  onChange={(e) => setRemember(e.target.checked)}
+                />
+                Remember me
+              </label>
+            </div>
+
             {/* Submit Button */}
             <button
               type="submit"
@@ -330,22 +356,26 @@ const Login = ({ onSignupClick }) => {
                 'Sign In'
               )}
             </button>
+
+            
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600 mb-2">
               Demo credentials: Use any password
             </p>
-            <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
-              <Link to="/signup" className="text-primary-600 font-medium underline">
-                Sign Up
-              </Link>
-            </p>
+            {/* Signup hidden - admin provisions accounts */}
           </div>
 
         </div>
       </div>
+    {showToast && (
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50" role="status" aria-live="polite">
+        <div className="px-4 py-3 bg-red-600 text-white rounded shadow-lg min-w-[280px] text-sm">
+          {error || 'Failed to sign in. Please enter correct credentials.'}
+        </div>
+      </div>
+    )}
     </div>
   );
 };

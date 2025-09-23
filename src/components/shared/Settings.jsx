@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Settings as SettingsIcon, User, Palette, Save } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import { useTheme } from '../../contexts/ThemeContext.jsx';
+import Select from 'react-select';
 
 const Settings = () => {
   const { user, updateUser } = useAuth();
@@ -17,29 +18,104 @@ const Settings = () => {
       name: user?.name || '',
       email: user?.email || '',
       role: user?.role || '',
-      interests: 'Leetcode, DSA',
-      skills: 'C, C++, Java, Python, ReactJS, PostgreSQL, Django',
-      goals: 'GATE, 9+ CGPA'
-      // notifications: true,
-      // emailNotifications: true,
-      // smsNotifications: false
+      interests: Array.isArray(user?.interests) ? user.interests : [],
+      skills: Array.isArray(user?.skills) ? user.skills : [],
+      goals: Array.isArray(user?.goals) ? user.goals : []
     },
     appearance: {
-      theme: 'light'
+      theme: theme || 'light'
     }
-    // privacy: {
-    //   dataSharing: false,
-    //   analytics: true
-    // }
   });
 
   const [settings, setSettings] = useState(originalSettings.current);
 
-  // Check for unsaved changes whenever settings change
+  const interestsData = [
+    { text: 'Programming', value: 'programming' },
+    { text: 'Web Development', value: 'web-dev' },
+    { text: 'Artificial Intelligence', value: 'ai' },
+    { text: 'Machine Learning', value: 'ml' },
+    { text: 'Data Science', value: 'data-science' },
+    { text: 'Cybersecurity', value: 'cybersecurity' },
+    { text: 'Mobile Development', value: 'mobile-dev' },
+    { text: 'Cloud Computing', value: 'cloud' },
+    { text: 'DevOps', value: 'devops' }
+  ];
+
+  const skillsData = [
+    { text: 'Python', value: 'python' },
+    { text: 'JavaScript', value: 'javascript' },
+    { text: 'Java', value: 'java' },
+    { text: 'C++', value: 'cpp' },
+    { text: 'React', value: 'react' },
+    { text: 'Node.js', value: 'nodejs' },
+    { text: 'SQL', value: 'sql' },
+    { text: 'Git', value: 'git' },
+    { text: 'Docker', value: 'docker' }
+  ];
+
+  const goalsData = [
+    { text: 'Learn New Technologies', value: 'learn-tech' },
+    { text: 'Build Projects', value: 'build-projects' },
+    { text: 'Get Internship', value: 'internship' },
+    { text: 'Improve Problem Solving', value: 'problem-solving' },
+    { text: 'Master Programming Language', value: 'master-lang' },
+    { text: 'Contribute to Open Source', value: 'open-source' },
+    { text: 'Network with Peers', value: 'networking' },
+    { text: 'Research Opportunities', value: 'research' }
+  ];
+
+  const selectStyles = {
+    control: (base) => ({
+      ...base,
+      minHeight: '40px',
+      boxShadow: 'none',
+      borderColor: '#d1d5db'
+    }),
+    multiValue: (base) => ({
+      ...base,
+      backgroundColor: '#e0e7ff'
+    }),
+    multiValueLabel: (base) => ({
+      ...base,
+      color: '#4f46e5'
+    }),
+    multiValueRemove: (base) => ({
+      ...base,
+      color: '#4f46e5'
+    })
+  };
+
+  // Check for unsaved changes whenever settings change (ignore appearance/theme changes)
   useEffect(() => {
-    const hasChanges = JSON.stringify(settings) !== JSON.stringify(originalSettings.current);
+    const currentComparable = JSON.stringify({ profile: settings.profile });
+    const originalComparable = JSON.stringify({ profile: originalSettings.current.profile });
+    const hasChanges = currentComparable !== originalComparable;
     setHasUnsavedChanges(hasChanges);
+    try {
+      localStorage.setItem('settingsHasUnsaved', hasChanges ? '1' : '0');
+    } catch (_) {}
   }, [settings]);
+
+  // Keep appearance theme out of unsaved-changes flow by syncing original when theme changes
+  useEffect(() => {
+    originalSettings.current = {
+      ...originalSettings.current,
+      appearance: { theme }
+    };
+    setSettings(prev => ({
+      ...prev,
+      appearance: { theme }
+    }));
+  }, [theme]);
+
+  // Listen for external discard requests (e.g., when navigating away from Settings)
+  useEffect(() => {
+    const discardListener = () => {
+      handleDiscardChanges();
+    };
+    window.addEventListener('settings:discard', discardListener);
+    return () => window.removeEventListener('settings:discard', discardListener);
+  }, []);
 
   const handleSettingChange = (category, key, value) => {
     setSettings(prev => ({
@@ -52,18 +128,21 @@ const Settings = () => {
   };
 
   const handleTabChange = (tabId) => {
-    if (tabId === 'appearance') {
-      setActiveTab(tabId);
+    // If moving from profile -> appearance with unsaved changes, prompt
+    if (activeTab === 'profile' && tabId === 'appearance' && hasUnsavedChanges) {
+      setPendingTabChange(tabId);
+      setShowDiscardAlert(true);
       return;
     }
-    else {
-      if (hasUnsavedChanges) {
-        setPendingTabChange(tabId);
-        setShowDiscardAlert(true);
-      } else {
-        setActiveTab(tabId);
-      }
+
+    // Otherwise allow switching freely (including appearance -> profile)
+    if (hasUnsavedChanges && activeTab !== 'appearance' && tabId !== 'appearance') {
+      setPendingTabChange(tabId);
+      setShowDiscardAlert(true);
+      return;
     }
+
+    setActiveTab(tabId);
   };
 
   const handleDiscardChanges = () => {
@@ -74,6 +153,7 @@ const Settings = () => {
       setActiveTab(pendingTabChange);
       setPendingTabChange(null);
     }
+    try { localStorage.setItem('settingsHasUnsaved', '0'); } catch (_) {}
   };
 
   const handleKeepChanges = () => {
@@ -95,6 +175,7 @@ const Settings = () => {
     // Update original settings to current settings
     originalSettings.current = JSON.parse(JSON.stringify(settings));
     setHasUnsavedChanges(false);
+    try { localStorage.setItem('settingsHasUnsaved', '0'); } catch (_) {}
     
     // In a real app, this would also save to backend
     console.log('Settings saved:', settings);
@@ -195,38 +276,44 @@ const Settings = () => {
                       </div>
                     )}
                     {user?.role === 'student' ? (
-                      <span>
+                      <div className="md:col-span-2 space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Interests
-                          </label>
-                          <textarea
-                            value={settings.profile.interests}
-                            onChange={(e) => handleSettingChange('profile', 'interests', e.target.value)}
-                            className="input-field bg-gray-100"
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Interests</label>
+                          <Select
+                            isMulti
+                            options={interestsData.map(item => ({ value: item.value, label: item.text }))}
+                            value={(settings.profile.interests || []).map(value => ({ value, label: interestsData.find(i => i.value === value)?.text }))}
+                            onChange={(selected) => handleSettingChange('profile', 'interests', selected ? selected.map(s => s.value) : [])}
+                            styles={selectStyles}
+                            classNamePrefix="dropdown"
+                            placeholder="Select your interests"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Skills
-                          </label>
-                          <textarea
-                            value={settings.profile.skills}
-                            onChange={(e) => handleSettingChange('profile', 'skills', e.target.value)}
-                            className="input-field bg-gray-100"
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Skills</label>
+                          <Select
+                            isMulti
+                            options={skillsData.map(item => ({ value: item.value, label: item.text }))}
+                            value={(settings.profile.skills || []).map(value => ({ value, label: skillsData.find(i => i.value === value)?.text }))}
+                            onChange={(selected) => handleSettingChange('profile', 'skills', selected ? selected.map(s => s.value) : [])}
+                            styles={selectStyles}
+                            classNamePrefix="dropdown"
+                            placeholder="Select your skills"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Goals
-                          </label>
-                          <textarea
-                            value={settings.profile.goals}
-                            onChange={(e) => handleSettingChange('profile', 'goals', e.target.value)}
-                            className="input-field bg-gray-100"
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Goals</label>
+                          <Select
+                            isMulti
+                            options={goalsData.map(item => ({ value: item.value, label: item.text }))}
+                            value={(settings.profile.goals || []).map(value => ({ value, label: goalsData.find(i => i.value === value)?.text }))}
+                            onChange={(selected) => handleSettingChange('profile', 'goals', selected ? selected.map(s => s.value) : [])}
+                            styles={selectStyles}
+                            classNamePrefix="dropdown"
+                            placeholder="Select your goals"
                           />
                         </div>
-                      </span>
+                      </div>
                     ) : (<span></span>)}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">

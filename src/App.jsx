@@ -4,7 +4,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext.jsx';
 import { ThemeProvider } from './contexts/ThemeContext.jsx';
 import PWARegistration from './components/PWARegistration.jsx';
 import Login from './components/shared/Login.jsx';
-import Signup from './components/shared/Signup.jsx';
+// import Signup from './components/shared/Signup.jsx';
 import Navigation from './components/shared/Navigation.jsx';
 import QRCodeAttendance from './components/shared/QRCodeAttendance.jsx';
 
@@ -47,7 +47,8 @@ const AppContent = () => {
       <Routes>
         <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        {/* Signup disabled - admin provides credentials */}
+        {/* <Route path="/signup" element={<Signup />} /> */}
         <Route
           path="/dashboard"
           element={
