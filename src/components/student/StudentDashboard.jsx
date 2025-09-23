@@ -15,62 +15,62 @@ const StudentDashboard = () => {
   const [nextClass, setNextClass] = useState(null);
   const [freePeriods, setFreePeriods] = useState([]);
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setCurrentTime(new Date());
-  //   }, 1000);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
 
     // Get today's schedule
-    // const today = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
-    // const schedule = timetableData[today] || [];
-    // setTodaySchedule(schedule);
+    const today = new Date().toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase();
+    const schedule = timetableData[today] || [];
+    setTodaySchedule(schedule);
 
     // Find current and next class
-    // const now = new Date();
-    // const currentHour = now.getHours();
-    // const currentMinute = now.getMinutes();
-    // const currentTimeMinutes = currentHour * 60 + currentMinute;
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentTimeMinutes = currentHour * 60 + currentMinute;
 
-    // let current = null;
-    // let next = null;
-    // const free = [];
+    let current = null;
+    let next = null;
+    const free = [];
 
-    // schedule.forEach((cls, index) => {
-    //   const [startTime, endTime] = cls.time.split(' - ');
-    //   const [startHour, startMin] = startTime.split(':').map(Number);
-    //   const [endHour, endMin] = endTime.split(':').map(Number);
+    schedule.forEach((cls, index) => {
+      const [startTime, endTime] = cls.time.split(' - ');
+      const [startHour, startMin] = startTime.split(':').map(Number);
+      const [endHour, endMin] = endTime.split(':').map(Number);
       
-    //   const startMinutes = startHour * 60 + startMin;
-    //   const endMinutes = endHour * 60 + endMin;
+      const startMinutes = startHour * 60 + startMin;
+      const endMinutes = endHour * 60 + endMin;
 
-    //   if (currentTimeMinutes >= startMinutes && currentTimeMinutes <= endMinutes) {
-    //     current = cls;
-    //   } else if (currentTimeMinutes < startMinutes && !next) {
-    //     next = cls;
-    //   }
+      if (currentTimeMinutes >= startMinutes && currentTimeMinutes <= endMinutes) {
+        current = cls;
+      } else if (currentTimeMinutes < startMinutes && !next) {
+        next = cls;
+      }
 
-    //   // Check for free periods
-    //   if (index > 0) {
-    //     const prevClass = schedule[index - 1];
-    //     const [prevEndHour, prevEndMin] = prevClass.time.split(' - ')[1].split(':').map(Number);
-    //     const prevEndMinutes = prevEndHour * 60 + prevEndMin;
+      // Check for free periods
+      if (index > 0) {
+        const prevClass = schedule[index - 1];
+        const [prevEndHour, prevEndMin] = prevClass.time.split(' - ')[1].split(':').map(Number);
+        const prevEndMinutes = prevEndHour * 60 + prevEndMin;
         
-    //     if (startMinutes - prevEndMinutes > 15) {
-    //       free.push({
-    //         start: `${Math.floor(prevEndMinutes / 60)}:${(prevEndMinutes % 60).toString().padStart(2, '0')}`,
-    //         end: startTime,
-    //         duration: startMinutes - prevEndMinutes
-    //       });
-    //     }
-    //   }
-    // });
+        if (startMinutes - prevEndMinutes > 15) {
+          free.push({
+            start: `${Math.floor(prevEndMinutes / 60)}:${(prevEndMinutes % 60).toString().padStart(2, '0')}`,
+            end: startTime,
+            duration: startMinutes - prevEndMinutes
+          });
+        }
+      }
+    });
 
-  //   setCurrentClass(current);
-  //   setNextClass(next);
-  //   setFreePeriods(free);
+    setCurrentClass(current);
+    setNextClass(next);
+    setFreePeriods(free);
 
-  //   return () => clearInterval(timer);
-  // }, []);
+    return () => clearInterval(timer);
+  }, []);
 
   const getAttendanceStatus = () => {
     const todayAttendance = attendanceData.today.classes;
@@ -217,7 +217,7 @@ const StudentDashboard = () => {
       </div>
 
       {/* Today's Schedule */}
-      {/* <div className="card">
+      { <div className="card">
         <div className="flex items-center mb-6">
           <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
             <Calendar className="w-5 h-5 text-purple-600" />
@@ -264,7 +264,7 @@ const StudentDashboard = () => {
             </div>
           ))}
         </div>
-      </div> */}
+      </div> }
 
       {/* Free Periods & Task Recommendations */}
       {freePeriods.length > 0 && (

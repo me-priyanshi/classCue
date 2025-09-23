@@ -27,73 +27,24 @@ const FacultyAttendance = () => {
   const exportClassAttendanceCSV = () => {
     if (!currentClass) return;
 
-    // Create HTML table with color coding for Excel compatibility
-    const createHTMLTable = () => {
-      let html = `
-        <table border="1" style="border-collapse: collapse;">
-          <thead>
-            <tr style="background-color: #3b82f6; color: white;">
-              <th>Student ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Status</th>
-              <th>Time</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-      
-      currentClass.students.forEach(student => {
-        const studentInfo = getStudentInfo(student.id);
-        const status = student.present ? 'Present' : 'Absent';
-        const statusColor = student.present ? '#10b981' : '#ef4444';
-        
-        html += `
-          <tr>
-            <td>${student.studentId || student.id}</td>
-            <td>${student.name}</td>
-            <td>${studentInfo?.email || ''}</td>
-            <td style="background-color: ${statusColor}; color: white; text-align: center; font-weight: bold;">${status}</td>
-            <td style="text-align: center;">${student.time || 'N/A'}</td>
-          </tr>
-        `;
-      });
-      
-      html += `
-          </tbody>
-        </table>
-      `;
-      
-      return html;
-    };
+    const headers = ['Student ID', 'Name', 'Email', 'Status', 'Time'];
+    const rows = currentClass.students.map(student => {
+      const studentInfo = getStudentInfo(student.id);
+      return [
+        student.studentId || student.id,
+        student.name,
+        studentInfo?.email || '',
+        student.present ? 'Present' : 'Absent',
+        student.time || 'N/A'
+      ];
+    });
 
-    // Create a temporary HTML file with the table
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>${currentClass.subject} - Class Attendance</title>
-          <style>
-            body { font-family: Arial, sans-serif; margin: 20px; }
-            table { width: 100%; }
-            th, td { padding: 8px; text-align: left; }
-          </style>
-        </head>
-        <body>
-          <h1>${currentClass.subject} - Class Attendance</h1>
-          <p>Teacher: ${currentClass.teacher}</p>
-          <p>Time: ${currentClass.time} | Room: ${currentClass.room}</p>
-          <p>Date: ${new Date().toLocaleDateString()}</p>
-          ${createHTMLTable()}
-        </body>
-      </html>
-    `;
-
-    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const csvContent = [headers, ...rows].map(r => r.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${currentClass.subject}_attendance_${new Date().toISOString().split('T')[0]}.html`;
+    a.download = `${currentClass.subject}_attendance_${new Date().toISOString().split('T')[0]}.csv`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -165,6 +116,71 @@ const FacultyAttendance = () => {
     
     // Save the PDF
     doc.save(`${currentClass.subject}_attendance_${new Date().toISOString().split('T')[0]}.pdf`);
+  };
+
+  const exportClassAttendanceExcel = () => {
+    if (!currentClass) return;
+
+    let html = `
+      <table border="1" style="border-collapse: collapse;">
+        <thead>
+          <tr style="background-color: #3b82f6; color: white;">
+            <th>Student ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    currentClass.students.forEach(student => {
+      const info = getStudentInfo(student.id);
+      const isPresent = student.present;
+      const statusText = isPresent ? 'Present' : 'Absent';
+      const statusStyle = isPresent ? 'background-color:#10b981; color:#ffffff; font-weight:bold; text-align:center;' : 'background-color:#ef4444; color:#ffffff; font-weight:bold; text-align:center;';
+      const rowStyle = isPresent ? 'background-color:#ecfdf5;' : 'background-color:#fee2e2;';
+
+      html += `
+        <tr style="${rowStyle}">
+          <td>${student.studentId || student.id}</td>
+          <td>${student.name}</td>
+          <td>${info?.email || ''}</td>
+          <td style="${statusStyle}">${statusText}</td>
+          <td>${student.time || 'N/A'}</td>
+        </tr>
+      `;
+    });
+
+    html += `
+        </tbody>
+      </table>
+    `;
+
+    const htmlWrapper = `
+      <!DOCTYPE html>
+      <html>
+        <head><meta charset="utf-8"><title>${currentClass.subject} - Class Attendance</title></head>
+        <body>
+          <h1>${currentClass.subject} - Class Attendance</h1>
+          <p>Teacher: ${currentClass.teacher}</p>
+          <p>Time: ${currentClass.time} | Room: ${currentClass.room}</p>
+          <p>Date: ${new Date().toLocaleDateString()}</p>
+          ${html}
+        </body>
+      </html>
+    `;
+
+    const blob = new Blob([htmlWrapper], { type: 'application/vnd.ms-excel' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${currentClass.subject}_attendance_${new Date().toISOString().split('T')[0]}.xls`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   };
 
   const filteredStudents = currentClass?.students.filter(student => {
@@ -242,13 +258,13 @@ const FacultyAttendance = () => {
                 ? 'bg-green-900 border-green-700 hover:bg-green-800' 
                 : 'bg-green-50 border-green-200 hover:bg-green-100'
             }`}
-            onClick={exportClassAttendanceCSV}
+            onClick={exportClassAttendanceExcel}
           >
             <div className="flex items-center">
               <Download className={`w-6 h-6 mr-3 ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`} />
               <div className="text-left">
-                <h4 className={`font-medium ${theme === 'dark' ? 'text-green-300' : 'text-green-900'}`}>Export Report</h4>
-                <p className={`text-sm ${theme === 'dark' ? 'text-green-400' : 'text-green-700'}`}>Download attendance report</p>
+                <h4 className={`font-medium ${theme === 'dark' ? 'text-green-300' : 'text-green-900'}`}>Export CSV</h4>
+                <p className={`text-sm ${theme === 'dark' ? 'text-green-400' : 'text-green-700'}`}>Download CSV file</p>
               </div>
             </div>
           </button>
@@ -418,12 +434,12 @@ const FacultyAttendance = () => {
                     key={student.id}
                     className={`p-4 rounded-lg border-2 transition-all duration-200 ${
                       student.present
-                        ? theme === 'dark' 
-                          ? 'border-green-600 bg-green-900' 
-                          : 'border-green-200 bg-green-50'
+                        ? theme === 'dark'
+                          ? 'border-green-600 bg-green-900 hover:bg-green-800'
+                          : 'border-green-300 bg-green-100 hover:bg-green-200'
                         : theme === 'dark'
-                          ? 'border-red-600 bg-red-900'
-                          : 'border-red-200 bg-red-50'
+                          ? 'border-red-600 bg-red-900 hover:bg-red-800'
+                          : 'border-red-300 bg-red-100 hover:bg-red-200'
                     }`}
                   >
                     <div className="flex items-center justify-between">

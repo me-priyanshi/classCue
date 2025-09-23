@@ -98,75 +98,88 @@ const FacultyDashboard = () => {
   };
 
   const exportAttendanceCSV = () => {
-    // Create HTML table with color coding for Excel compatibility
-    const createHTMLTable = () => {
-      let html = `
-        <table border="1" style="border-collapse: collapse;">
-          <thead>
-            <tr style="background-color: #3b82f6; color: white;">
-              <th>Student ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Total Classes</th>
-              <th>Present</th>
-              <th>Absent</th>
-              <th>Percentage</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-      
-      studentsData.forEach(student => {
-        const presentCount = student.attendance.present;
-        const absentCount = student.attendance.absent;
-        const totalClasses = student.attendance.totalClasses;
-        
-        html += `
-          <tr>
-            <td>${student.studentId}</td>
-            <td>${student.name}</td>
-            <td>${student.email}</td>
-            <td>${totalClasses}</td>
-            <td style="background-color:rgb(56, 233, 174); color: white; text-align: center; font-weight: bold;">${presentCount}</td>
-            <td style="background-color:rgb(252, 125, 125); color: white; text-align: center; font-weight: bold;">${absentCount}</td>
-            <td style="text-align: center;">${student.attendance.percentage}%</td>
-          </tr>
-        `;
-      });
-      
-      html += `
-          </tbody>
-        </table>
-      `;
-      
-      return html;
-    };
+    const headers = ['Student ID', 'Name', 'Email', 'Total Classes', 'Present', 'Absent', 'Percentage'];
+    const rows = studentsData.map(student => [
+      student.studentId,
+      student.name,
+      student.email,
+      student.attendance.totalClasses,
+      student.attendance.present,
+      student.attendance.absent,
+      student.attendance.percentage
+    ]);
 
-    // Create a temporary HTML file with the table
-    const htmlContent = `
+    const csvContent = [headers, ...rows].map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `attendance_report_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  };
+
+  const exportAttendanceExcel = () => {
+    // Build an HTML table with inline colors; save as .xls so Excel preserves styles
+    let html = `
+      <table border="1" style="border-collapse: collapse;">
+        <thead>
+          <tr style="background-color: #3b82f6; color: white;">
+            <th>Student ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Total Classes</th>
+            <th>Present</th>
+            <th>Absent</th>
+            <th>Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    studentsData.forEach(student => {
+      const presentCount = student.attendance.present;
+      const absentCount = student.attendance.absent;
+      const totalClasses = student.attendance.totalClasses;
+      const percentage = student.attendance.percentage;
+
+      html += `
+        <tr>
+          <td>${student.studentId}</td>
+          <td>${student.name}</td>
+          <td>${student.email}</td>
+          <td>${totalClasses}</td>
+          <td style="background-color:#10b981; color:#ffffff; text-align:center; font-weight:bold;">${presentCount}</td>
+          <td style="background-color:#ef4444; color:#ffffff; text-align:center; font-weight:bold;">${absentCount}</td>
+          <td style="text-align:center; ${percentage >= 75 ? 'background-color:#d1fae5;' : 'background-color:#fee2e2;'}">${percentage}%</td>
+        </tr>
+      `;
+    });
+
+    html += `
+        </tbody>
+      </table>
+    `;
+
+    const htmlWrapper = `
       <!DOCTYPE html>
       <html>
-        <head>
-          <title>Attendance Report</title>
-          <style>
-            body { font-family: Arial, sans-serif; margin: 20px; }
-            table { width: 100%; }
-            th, td { padding: 8px; text-align: left; }
-          </style>
-        </head>
+        <head><meta charset="utf-8"><title>Attendance Report</title></head>
         <body>
           <h1>ClassCue Attendance Report</h1>
           <p>Generated on: ${new Date().toLocaleDateString()}</p>
-          ${createHTMLTable()}
+          ${html}
         </body>
       </html>
     `;
 
-    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const blob = new Blob([htmlWrapper], { type: 'application/vnd.ms-excel' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `attendance_report_${new Date().toISOString().split('T')[0]}.html`;
+    a.download = `attendance_report_${new Date().toISOString().split('T')[0]}.xls`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -306,16 +319,18 @@ const FacultyDashboard = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <button
-            onClick={exportAttendanceCSV}
+            onClick={exportAttendanceExcel}
             className={`flex items-center justify-center p-4 rounded-lg border-2 border-green-200 ${theme === 'dark' ? 'bg-green-900 hover:bg-green-800' : 'bg-green-50 hover:bg-green-100'} transition-colors`}
           >
             <Download className="w-5 h-5 text-green-600 mr-2" />
             <div className="text-left">
               <div className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Export CSV</div>
-              <div className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Download attendance data as CSV file</div>
+              <div className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Download CSV file</div>
             </div>
           </button>
           
+          
+
           <button
             onClick={exportAttendancePDF}
             className={`flex items-center justify-center p-4 rounded-lg border-2 border-red-200 ${theme === 'dark' ? 'bg-red-900 hover:bg-red-800' : 'bg-red-50 hover:bg-red-100'} transition-colors`}
