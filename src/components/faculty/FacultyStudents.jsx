@@ -226,7 +226,18 @@ const FacultyStudents = () => {
             </thead>
             <tbody className={`${theme === 'dark' ? 'bg-gray-800 divide-y divide-gray-200' : 'bg-white divide-y divide-gray-200'}`}>
               {filteredAndSortedStudents.map((student) => (
-                <tr key={student.id} className={`${theme === 'dark' ? 'bg-gray-800 hover:bg-black' : 'bg-white hover:bg-gray-100'}`}>
+                <tr
+                  key={student.id}
+                  className={`${
+                    student.attendance.percentage >= 75
+                      ? theme === 'dark'
+                        ? 'bg-green-900 hover:bg-green-800'
+                        : 'bg-green-50 hover:bg-green-100'
+                      : theme === 'dark'
+                        ? 'bg-red-900 hover:bg-red-800'
+                        : 'bg-red-50 hover:bg-red-100'
+                  }`}
+                >
                   <td className="px-6 py-4 whitespace-nowrap">
                     {filteredAndSortedStudents.indexOf(student) + 1}
                   </td>

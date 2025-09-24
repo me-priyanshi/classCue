@@ -6,10 +6,7 @@ import { useAuth } from '../../contexts/AuthContext.jsx';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { loadStudentsData, loadTasksData, loadAttendanceData, loadTimetableData } from '../../utils/dataLoader.js';
-import studentsData from '../../../public/students.json';
-import attendanceData from '../../../public/attendance.json';
-import timetableData from '../../../public/timetable.json';
-import tasksData from '../../../public/tasks.json';
+import ExcelJS from 'exceljs';
 
 const FacultyDashboard = () => {
   const { user } = useAuth();
@@ -97,76 +94,61 @@ const FacultyDashboard = () => {
     });
   };
 
-  const exportAttendanceCSV = () => {
-    // Create HTML table with color coding for Excel compatibility
-    const createHTMLTable = () => {
-      let html = `
-        <table border="1" style="border-collapse: collapse;">
-          <thead>
-            <tr style="background-color: #3b82f6; color: white;">
-              <th>Student ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Total Classes</th>
-              <th>Present</th>
-              <th>Absent</th>
-              <th>Percentage</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-      
-      studentsData.forEach(student => {
-        const presentCount = student.attendance.present;
-        const absentCount = student.attendance.absent;
-        const totalClasses = student.attendance.totalClasses;
-        
-        html += `
-          <tr>
-            <td>${student.studentId}</td>
-            <td>${student.name}</td>
-            <td>${student.email}</td>
-            <td>${totalClasses}</td>
-            <td style="background-color:rgb(56, 233, 174); color: white; text-align: center; font-weight: bold;">${presentCount}</td>
-            <td style="background-color:rgb(252, 125, 125); color: white; text-align: center; font-weight: bold;">${absentCount}</td>
-            <td style="text-align: center;">${student.attendance.percentage}%</td>
-          </tr>
-        `;
+  const exportAttendanceExcel = async () => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Attendance');
+
+    const headerRow = worksheet.addRow(['Student ID', 'Name', 'Email', 'Total Classes', 'Present', 'Absent', 'Percentage']);
+    headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+    headerRow.alignment = { horizontal: 'center' };
+    headerRow.eachCell(cell => {
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF3B82F6' } };
+      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+    });
+
+    studentsData.forEach(student => {
+      const row = worksheet.addRow([
+        student.studentId,
+        student.name,
+        student.email,
+        student.attendance.totalClasses,
+        student.attendance.present,
+        student.attendance.absent,
+        `${student.attendance.percentage}%`
+      ]);
+
+      const baseTint = student.attendance.percentage >= 75 ? 'FFD1FAE5' : 'FFFEE2E2';
+      row.eachCell((cell, colNumber) => {
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: baseTint } };
+        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+        if (colNumber === 5) {
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF10B981' } };
+          cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+          cell.alignment = { horizontal: 'center' };
+        }
+        if (colNumber === 6) {
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEF4444' } };
+          cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+          cell.alignment = { horizontal: 'center' };
+        }
       });
-      
-      html += `
-          </tbody>
-        </table>
-      `;
-      
-      return html;
-    };
+    });
 
-    // Create a temporary HTML file with the table
-    const htmlContent = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Attendance Report</title>
-          <style>
-            body { font-family: Arial, sans-serif; margin: 20px; }
-            table { width: 100%; }
-            th, td { padding: 8px; text-align: left; }
-          </style>
-        </head>
-        <body>
-          <h1>ClassCue Attendance Report</h1>
-          <p>Generated on: ${new Date().toLocaleDateString()}</p>
-          ${createHTMLTable()}
-        </body>
-      </html>
-    `;
+    worksheet.columns.forEach(column => {
+      let maxLength = 10;
+      column.eachCell({ includeEmpty: true }, cell => {
+        const val = cell.value ? cell.value.toString() : '';
+        maxLength = Math.max(maxLength, val.length + 2);
+      });
+      column.width = Math.min(maxLength, 40);
+    });
 
-    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `attendance_report_${new Date().toISOString().split('T')[0]}.html`;
+    a.download = `attendance_report_${new Date().toISOString().split('T')[0]}.xlsx`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -195,9 +177,9 @@ const FacultyDashboard = () => {
     
     // Prepare table data with color coding
     const tableData = studentsData.map(student => [
-      student.studentId,
-      student.name,
-      student.email,
+        student.studentId,
+        student.name,
+        student.email,
       student.attendance.totalClasses,
       `Present: ${student.attendance.present}`,
       `Absent: ${student.attendance.absent}`,
@@ -306,16 +288,18 @@ const FacultyDashboard = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <button
-            onClick={exportAttendanceCSV}
+            onClick={exportAttendanceExcel}
             className={`flex items-center justify-center p-4 rounded-lg border-2 border-green-200 ${theme === 'dark' ? 'bg-green-900 hover:bg-green-800' : 'bg-green-50 hover:bg-green-100'} transition-colors`}
           >
             <Download className="w-5 h-5 text-green-600 mr-2" />
             <div className="text-left">
-              <div className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Export CSV</div>
-              <div className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Download attendance data as CSV file</div>
+              <div className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Export Excel (.xlsx)</div>
+              <div className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Download styled Excel file</div>
             </div>
           </button>
           
+          
+
           <button
             onClick={exportAttendancePDF}
             className={`flex items-center justify-center p-4 rounded-lg border-2 border-red-200 ${theme === 'dark' ? 'bg-red-900 hover:bg-red-800' : 'bg-red-50 hover:bg-red-100'} transition-colors`}
@@ -430,7 +414,7 @@ const FacultyDashboard = () => {
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div className="bg-purple-500 h-2 rounded-full" style={{ width: '89.3%' }}></div>
             </div>
-          </div>
+      </div>
         </div>
       </div> */}
 

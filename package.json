@@ -8,15 +8,19 @@
     "@mobiscroll/react-lite": "^4.10.9",
     "ajv": "^8.17.1",
     "ajv-keywords": "^5.1.0",
+    "exceljs": "^4.4.0",
+    "file-saver": "^2.0.5",
     "html5-qrcode": "^2.3.8",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.6.0",
     "lucide-react": "^0.263.1",
     "react": "^18.2.0",
+    "react-csv": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
     "react-select": "^5.10.2",
-    "react-webcam": "^7.0.1"
+    "react-webcam": "^7.0.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
