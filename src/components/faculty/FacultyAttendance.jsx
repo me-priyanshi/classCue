@@ -4,6 +4,7 @@ import { useTheme } from '../../contexts/ThemeContext.jsx';
 import QRAttendanceSession from './QRAttendanceSession';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import ExcelJS from 'exceljs';
 import { loadTasksData, loadAttendanceData, loadTimetableData } from '../../utils/dataLoader.js';
 import studentsData from '../../../public/students.json';
 import attendanceData from '../../../public/attendance.json';
@@ -118,65 +119,66 @@ const FacultyAttendance = () => {
     doc.save(`${currentClass.subject}_attendance_${new Date().toISOString().split('T')[0]}.pdf`);
   };
 
-  const exportClassAttendanceExcel = () => {
+  const exportClassAttendanceExcel = async () => {
     if (!currentClass) return;
 
-    let html = `
-      <table border="1" style="border-collapse: collapse;">
-        <thead>
-          <tr style="background-color: #3b82f6; color: white;">
-            <th>Student ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-    `;
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet(`${currentClass.subject}`);
 
-    currentClass.students.forEach(student => {
-      const info = getStudentInfo(student.id);
-      const isPresent = student.present;
-      const statusText = isPresent ? 'Present' : 'Absent';
-      const statusStyle = isPresent ? 'background-color:#10b981; color:#ffffff; font-weight:bold; text-align:center;' : 'background-color:#ef4444; color:#ffffff; font-weight:bold; text-align:center;';
-      const rowStyle = isPresent ? 'background-color:#ecfdf5;' : 'background-color:#fee2e2;';
-
-      html += `
-        <tr style="${rowStyle}">
-          <td>${student.studentId || student.id}</td>
-          <td>${student.name}</td>
-          <td>${info?.email || ''}</td>
-          <td style="${statusStyle}">${statusText}</td>
-          <td>${student.time || 'N/A'}</td>
-        </tr>
-      `;
+    // Header
+    const headerRow = worksheet.addRow(['Student ID', 'Name', 'Email', 'Status', 'Time']);
+    headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+    headerRow.alignment = { horizontal: 'center' };
+    headerRow.eachCell(cell => {
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF3B82F6' } };
+      cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
     });
 
-    html += `
-        </tbody>
-      </table>
-    `;
+    // Data rows with coloring by presence
+    currentClass.students.forEach(student => {
+      const info = getStudentInfo(student.id);
+      const statusText = student.present ? 'Present' : 'Absent';
+      const row = worksheet.addRow([
+        student.studentId || student.id,
+        student.name,
+        info?.email || '',
+        statusText,
+        student.time || 'N/A'
+      ]);
 
-    const htmlWrapper = `
-      <!DOCTYPE html>
-      <html>
-        <head><meta charset="utf-8"><title>${currentClass.subject} - Class Attendance</title></head>
-        <body>
-          <h1>${currentClass.subject} - Class Attendance</h1>
-          <p>Teacher: ${currentClass.teacher}</p>
-          <p>Time: ${currentClass.time} | Room: ${currentClass.room}</p>
-          <p>Date: ${new Date().toLocaleDateString()}</p>
-          ${html}
-        </body>
-      </html>
-    `;
+      const rowColor = student.present ? 'FFECFDF5' : 'FFFEE2E2'; // green tint or red tint
+      row.eachCell(cell => {
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: rowColor } };
+        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+      });
 
-    const blob = new Blob([htmlWrapper], { type: 'application/vnd.ms-excel' });
+      // Stronger color on Status cell
+      const statusCell = row.getCell(4);
+      statusCell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: student.present ? 'FF10B981' : 'FFEF4444' }
+      };
+      statusCell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+      statusCell.alignment = { horizontal: 'center' };
+    });
+
+    // Auto width
+    worksheet.columns.forEach(column => {
+      let maxLength = 10;
+      column.eachCell({ includeEmpty: true }, cell => {
+        const cellValue = cell.value ? cell.value.toString() : '';
+        maxLength = Math.max(maxLength, cellValue.length + 2);
+      });
+      column.width = Math.min(maxLength, 40);
+    });
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${currentClass.subject}_attendance_${new Date().toISOString().split('T')[0]}.xls`;
+    a.download = `${currentClass.subject}_attendance_${new Date().toISOString().split('T')[0]}.xlsx`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -212,7 +214,7 @@ const FacultyAttendance = () => {
           </div>
           <div className="flex space-x-2">
             <button
-              onClick={exportClassAttendanceCSV}
+              onClick={exportClassAttendanceExcel}
               className="btn-primary flex items-center"
               disabled={!currentClass}
             >
@@ -263,8 +265,8 @@ const FacultyAttendance = () => {
             <div className="flex items-center">
               <Download className={`w-6 h-6 mr-3 ${theme === 'dark' ? 'text-green-400' : 'text-green-600'}`} />
               <div className="text-left">
-                <h4 className={`font-medium ${theme === 'dark' ? 'text-green-300' : 'text-green-900'}`}>Export CSV</h4>
-                <p className={`text-sm ${theme === 'dark' ? 'text-green-400' : 'text-green-700'}`}>Download CSV file</p>
+                <h4 className={`font-medium ${theme === 'dark' ? 'text-green-300' : 'text-green-900'}`}>Export Excel (.xlsx)</h4>
+                <p className={`text-sm ${theme === 'dark' ? 'text-green-400' : 'text-green-700'}`}>Download styled Excel file</p>
               </div>
             </div>
           </button>

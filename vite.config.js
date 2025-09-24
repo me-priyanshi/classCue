@@ -8,6 +8,9 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      devOptions: {
+        enabled: false
+      },
       registerType: 'autoUpdate',
       manifest: {
         name: 'ClassCue - Smart Classroom Attendance',
@@ -56,9 +59,8 @@ export default defineConfig({
     })
   ],
   server: {
-    port: 3001,
-    open: true,
-    strictPort: false
+    port: 3000,
+    open: true
   },
   build: {
     outDir: 'dist',
