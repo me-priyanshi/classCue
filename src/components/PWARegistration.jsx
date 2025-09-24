@@ -92,7 +92,7 @@ const PWARegistration = () => {
   return (
     <>
       {/* Installation guide and download buttons - positioned for mobile */}
-      {!isInstalled && (
+      {/* {!isInstalled && (
         <div className="fixed top-4 right-4 flex gap-2 z-40">
           <button
             onClick={() => setShowInstallInstructions(true)}
@@ -121,7 +121,7 @@ const PWARegistration = () => {
 
       {showInstallInstructions && (
         <InstallInstructions onClose={() => setShowInstallInstructions(false)} />
-      )}
+      )} */}
     </>
   );
 };

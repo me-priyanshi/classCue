@@ -98,7 +98,7 @@ const FacultyDashboard = () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Attendance');
 
-    const headerRow = worksheet.addRow(['Student ID', 'Name', 'Email', 'Total Classes', 'Present', 'Absent', 'Percentage']);
+    const headerRow = worksheet.addRow(['Sr No','Student ID', 'Name', 'Email', 'Total Classes', 'Present', 'Absent', 'Percentage']);
     headerRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
     headerRow.alignment = { horizontal: 'center' };
     headerRow.eachCell(cell => {
@@ -106,8 +106,9 @@ const FacultyDashboard = () => {
       cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
     });
 
-    studentsData.forEach(student => {
+    studentsData.forEach((student, index) => {
       const row = worksheet.addRow([
+        index + 1,
         student.studentId,
         student.name,
         student.email,
@@ -117,20 +118,20 @@ const FacultyDashboard = () => {
         `${student.attendance.percentage}%`
       ]);
 
-      const baseTint = student.attendance.percentage >= 75 ? 'FFD1FAE5' : 'FFFEE2E2';
+      // const baseTint = student.attendance.percentage >= 75 ? 'FFD1FAE5' : 'FFFEE2E2';
       row.eachCell((cell, colNumber) => {
-        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: baseTint } };
+        // cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: baseTint } };
         cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
-        if (colNumber === 5) {
-          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF10B981' } };
-          cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+        if (colNumber === 1 || colNumber === 2 || colNumber === 5 || colNumber === 6 || colNumber === 7 || colNumber === 8) {
+        //   cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF10B981' } };
+        //   cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
           cell.alignment = { horizontal: 'center' };
         }
-        if (colNumber === 6) {
-          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEF4444' } };
-          cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-          cell.alignment = { horizontal: 'center' };
-        }
+        // if (colNumber === 6) {
+        //   cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEF4444' } };
+        //   cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+        //   cell.alignment = { horizontal: 'center' };
+        // }
       });
     });
 
@@ -176,37 +177,61 @@ const FacultyDashboard = () => {
     doc.text(`Average Attendance: ${attendanceStats.averageAttendance}%`, 20, 76);
     
     // Prepare table data with color coding
-    const tableData = studentsData.map(student => [
+    const tableData = studentsData.map((student,index) => [
+        index + 1,
         student.studentId,
         student.name,
         student.email,
-      student.attendance.totalClasses,
-      `Present: ${student.attendance.present}`,
-      `Absent: ${student.attendance.absent}`,
-      `${student.attendance.percentage}%`
+        student.attendance.totalClasses,
+        student.attendance.present,
+        student.attendance.absent,
+        `${student.attendance.percentage}%`
     ]);
     
     // Add table with custom cell styling
     doc.autoTable({
-      head: [['Student ID', 'Name', 'Email', 'Total Classes', 'Present', 'Absent', 'Percentage']],
+      head: [['Sr No','Student ID', 'Name', 'Email', 'Total Classes', 'Present', 'Absent', 'Percentage']],
       body: tableData,
       startY: 85,
-      styles: { fontSize: 8 },
-      headStyles: { fillColor: [59, 130, 246] },
-      alternateRowStyles: { fillColor: [248, 250, 252] },
-      didParseCell: function(data) {
+      styles: {
+        fontSize: 8,
+        textColor: [0, 0, 0],
+        lineColor: [0, 0, 0], // Border color
+        lineWidth: 0.2,            // Border thickness
+      },
+      headStyles: {
+        fillColor: [59, 130, 246],
+        textColor: [255, 255, 255],
+        halign: 'center',
+      },
+      alternateRowStyles: {
+        fillColor: [248, 250, 252],
+      },
+      didParseCell: function (data) {
+        const nameColIndex = 2;
+        const emailColIndex = 3;
+        // Center-align all except Name and Email
+        if (data.column.index !== nameColIndex && data.column.index !== emailColIndex) {
+          data.cell.styles.halign = 'center';
+        }
+        // Apply border color to all cells
+        data.cell.styles.lineColor = [0,0,0]; // Tailwind blue-500
+        data.cell.styles.lineWidth = 0.2;
+      },
+
+      // didParseCell: function(data) {
         // Color code Present and Absent columns
-        if (data.column.index === 4) { // Present column
-          data.cell.styles.fillColor = [16, 185, 129]; // Green
-          data.cell.styles.textColor = [255, 255, 255]; // White text
-          data.cell.styles.fontStyle = 'bold';
-        }
-        if (data.column.index === 5) { // Absent column
-          data.cell.styles.fillColor = [239, 68, 68]; // Red
-          data.cell.styles.textColor = [255, 255, 255]; // White text
-          data.cell.styles.fontStyle = 'bold';
-        }
-      }
+        // if (data.column.index === 4) { // Present column
+        //   data.cell.styles.fillColor = [16, 185, 129]; // Green
+        //   data.cell.styles.textColor = [255, 255, 255]; // White text
+        //   data.cell.styles.fontStyle = 'bold';
+        // }
+        // if (data.column.index === 5) { // Absent column
+        //   data.cell.styles.fillColor = [239, 68, 68]; // Red
+        //   data.cell.styles.textColor = [255, 255, 255]; // White text
+        //   data.cell.styles.fontStyle = 'bold';
+        // }
+      // }
     });
     
     // Save the PDF

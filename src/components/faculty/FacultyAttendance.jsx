@@ -212,7 +212,7 @@ const FacultyAttendance = () => {
               <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Monitor and manage student attendance in real-time</p>
             </div>
           </div>
-          <div className="flex space-x-2">
+          {/* <div className="flex space-x-2">
             <button
               onClick={exportClassAttendanceExcel}
               className="btn-primary flex items-center"
@@ -221,15 +221,7 @@ const FacultyAttendance = () => {
               <Download className="w-4 h-4 mr-2" />
               Export CSV
             </button>
-            <button
-              onClick={exportClassAttendancePDF}
-              className="btn-secondary flex items-center"
-              disabled={!currentClass}
-            >
-              <FileText className="w-4 h-4 mr-2" />
-              Export PDF
-            </button>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -269,6 +261,25 @@ const FacultyAttendance = () => {
                 <p className={`text-sm ${theme === 'dark' ? 'text-green-400' : 'text-green-700'}`}>Download styled Excel file</p>
               </div>
             </div>
+          </button>
+
+          <button
+              onClick={exportClassAttendancePDF}
+              // className="btn-secondary flex items-center"
+              className={`p-4 border rounded-lg transition-colors duration-200 ${
+              theme === 'dark' 
+                ? 'bg-teritary border-secondary-700 hover:bg-gray-100' 
+                : 'bg-secondary-50 border-secondary-200 hover:bg-primary-100'
+            }`}
+          >
+            <div className="flex items-center">
+              <FileText className="w-6 h-6 mr-3" />
+              <div className="text-left">
+                <h4 className='font-medium'>Export PDF (.pdf)</h4>
+                <p className='text-sm'>Download styled PDF file</p>
+              </div>
+            </div>
+          
           </button>
         </div>
       </div>
