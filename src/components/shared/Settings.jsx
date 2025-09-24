@@ -65,23 +65,56 @@ const Settings = () => {
   ];
 
   const selectStyles = {
-    control: (base) => ({
+    control: (base, state) => ({
       ...base,
       minHeight: '40px',
       boxShadow: 'none',
-      borderColor: '#d1d5db'
+      backgroundColor: theme === 'dark' ? '#1f2937' : '#ffffff',
+      borderColor: state.isFocused 
+        ? '#6366f1' 
+        : theme === 'dark' ? '#374151' : '#d1d5db',
+      '&:hover': {
+        borderColor: theme === 'dark' ? '#4b5563' : '#9fa6b2'
+      }
+    }),
+    menu: (base) => ({
+      ...base,
+      backgroundColor: theme === 'dark' ? '#1f2937' : '#ffffff',
+      borderColor: theme === 'dark' ? '#374151' : '#d1d5db'
+    }),
+    option: (base, state) => ({
+      ...base,
+      backgroundColor: state.isFocused
+        ? theme === 'dark' ? '#374151' : '#e0e7ff'
+        : theme === 'dark' ? '#1f2937' : '#ffffff',
+      color: theme === 'dark' ? '#ffffff' : '#000000',
+      '&:hover': {
+        backgroundColor: theme === 'dark' ? '#374151' : '#e0e7ff'
+      }
     }),
     multiValue: (base) => ({
       ...base,
-      backgroundColor: '#e0e7ff'
+      backgroundColor: theme === 'dark' ? '#374151' : '#e0e7ff'
     }),
     multiValueLabel: (base) => ({
       ...base,
-      color: '#4f46e5'
+      color: theme === 'dark' ? '#ffffff' : '#4f46e5'
     }),
     multiValueRemove: (base) => ({
       ...base,
-      color: '#4f46e5'
+      color: theme === 'dark' ? '#ffffff' : '#4f46e5',
+      '&:hover': {
+        backgroundColor: theme === 'dark' ? '#4b5563' : '#c7d2fe',
+        color: theme === 'dark' ? '#e5e7eb' : '#4338ca'
+      }
+    }),
+    input: (base) => ({
+      ...base,
+      color: theme === 'dark' ? '#ffffff' : '#000000'
+    }),
+    singleValue: (base) => ({
+      ...base,
+      color: theme === 'dark' ? '#ffffff' : '#000000'
     })
   };
 
@@ -191,11 +224,49 @@ const Settings = () => {
 
   return (
     <div className="space-y-6">
+      {/* Discard Changes Modal
+      {showDiscardAlert && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="fixed inset-0 bg-opacity-50" onClick={handleKeepChanges}>
+          <div className={`relative p-6 rounded-lg shadow-xl ${theme === 'dark' ? 'bg-black' : 'bg-white'} max-w-sm w-full m-4`}>
+            <div className={`flex items-center ${theme === 'dark' ? 'text-red-400' : 'text-red-600'} mb-4`}>
+              <span className="text-xl font-semibold">Discard Changes?</span>
+            </div>
+            <p className={`mb-6 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+              You have unsaved changes. Are you sure you want to discard them and switch tabs?
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={handleKeepChanges}
+                className={`px-4 py-2 rounded-lg font-medium ${
+                  theme === 'dark' 
+                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' 
+                    : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                }`}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDiscardChanges}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700"
+              >
+                Discard Changes
+              </button>
+            </div>
+          </div>
+        </div>
+        </div>
+      )} */}
+      
       {/* Header */}
       <div className="card">
         <div className="flex items-center">
-          <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-            <SettingsIcon className="w-5 h-5 text-gray-600" />
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+            theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
+          }`}>
+            <SettingsIcon className={`w-5 h-5 ${
+              theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+            }`} />
           </div>
           <div className="ml-3">
             <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
@@ -278,7 +349,7 @@ const Settings = () => {
                     {user?.role === 'student' ? (
                       <div className="md:col-span-2 space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Interests</label>
+                          <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Interests</label>
                           <Select
                             isMulti
                             options={interestsData.map(item => ({ value: item.value, label: item.text }))}
@@ -290,7 +361,7 @@ const Settings = () => {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Skills</label>
+                          <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Skills</label>
                           <Select
                             isMulti
                             options={skillsData.map(item => ({ value: item.value, label: item.text }))}
@@ -302,7 +373,7 @@ const Settings = () => {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Goals</label>
+                          <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-200' : 'text-gray-700'}`}>Goals</label>
                           <Select
                             isMulti
                             options={goalsData.map(item => ({ value: item.value, label: item.text }))}
@@ -524,7 +595,7 @@ const Settings = () => {
       {/* Discard Changes Alert Modal */}
       {showDiscardAlert && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+          <div className={`rounded-lg p-6 max-w-md w-full mx-4 ${ theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
             <div className="flex items-center mb-4">
               <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mr-3">
                 <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

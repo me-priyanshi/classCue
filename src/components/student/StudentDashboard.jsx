@@ -4,8 +4,10 @@ import { useAuth } from '../../contexts/AuthContext.jsx';
 import attendanceData from '../../../public/attendance.json';
 import timetableData from '../../../public/timetable.json';
 import StudentProfilePrompt from './StudentProfilePrompt.jsx';
+import { useTheme } from '../../contexts/ThemeContext.jsx';
 
 const StudentDashboard = () => {
+  const {theme} = useTheme();
   const { user } = useAuth();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [todaySchedule, setTodaySchedule] = useState([]);
@@ -135,7 +137,7 @@ const StudentDashboard = () => {
       <div className="card">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               {getGreeting()}, {user?.name.split(' ')[0]}!
             </h1>
             <p className="text-gray-600 mt-1">
@@ -241,39 +243,57 @@ const StudentDashboard = () => {
           <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
             <Calendar className="w-5 h-5 text-purple-600" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 ml-3">Today's Schedule</h3>
+          <h3 className={`text-lg font-semibold ml-3 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Today's Schedule</h3>
         </div>
-        <div className="space-y-3">
+        <div className={`space-y-3 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
           {todaySchedule.map((cls) => (
             <div
               key={cls.id}
               className={`p-4 rounded-lg border-2 transition-all duration-200 ${
                 currentClass?.id === cls.id
-                  ? 'border-primary-500 bg-primary-50'
-                  : 'border-gray-200 bg-white hover:border-gray-300'
+                  ? theme === 'dark'
+                    ? 'border-primary-500 bg-primary-900/20'
+                    : 'border-primary-500 bg-primary-50'
+                  : theme === 'dark'
+                    ? 'border-gray-700 bg-gray-800 hover:border-gray-600 hover:bg-gray-900'
+                    : 'border-gray-200 bg-white hover:border-gray-800 hover:bg-gray-200'
               }`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center">
-                    <h4 className="font-medium text-gray-900">{cls.subject}</h4>
+                    <h4 className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {cls.subject}
+                    </h4>
                     <span
                       className={`ml-2 px-2 py-1 text-xs rounded-full ${
                         cls.type === 'lecture'
-                          ? 'bg-blue-100 text-blue-800'
+                          ? theme === 'dark'
+                            ? 'bg-blue-900/50 text-blue-200'
+                            : 'bg-blue-100 text-blue-800'
                           : cls.type === 'practical'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-purple-100 text-purple-800'
+                          ? theme === 'dark'
+                            ? 'bg-green-900/50 text-green-200'
+                            : 'bg-green-100 text-green-800'
+                          : theme === 'dark'
+                            ? 'bg-purple-900/50 text-purple-200'
+                            : 'bg-purple-100 text-purple-800'
                       }`}
                     >
                       {cls.type}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mt-1">{cls.teacher}</p>
-                  <p className="text-sm text-gray-500">{cls.room}</p>
+                  <p className={`text-sm mt-1 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                    {cls.teacher}
+                  </p>
+                  <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+                    {cls.room}
+                  </p>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium text-gray-900">{cls.time}</p>
+                  <p className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                    {cls.time}
+                  </p>
                   {currentClass?.id === cls.id && (
                     <div className="flex items-center text-sm text-primary-600 mt-1">
                       <div className="w-2 h-2 bg-primary-500 rounded-full mr-2 animate-pulse"></div>
