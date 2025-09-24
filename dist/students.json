@@ -10,7 +10,7 @@
       "absent": 3,
       "percentage": 93.3
     },
-    "subjects": ["ADA", "SE", "CN", "PDS"]
+    "subjects": ["ADA", "SE", "CN", "PDS","PE","IPDC"]
   },
   {
     "id": 2,
@@ -23,7 +23,7 @@
       "absent": 5,
       "percentage": 88.9
     },
-    "subjects": ["ADA", "SE", "CN", "PDS"]
+    "subjects": ["ADA", "SE", "CN", "PDS","PE","IPDC"]
   },
   {
     "id": 3,
@@ -36,7 +36,7 @@
       "absent": 1,
       "percentage": 97.8
     },
-    "subjects": ["ADA", "WT", "CN", "SEDA"]
+    "subjects": ["ADA", "WT", "CN", "SEDA","PE","IPDC"]
   },
   {
     "id": 4,
@@ -49,7 +49,7 @@
       "absent": 7,
       "percentage": 84.4
     },
-    "subjects": ["ADA", "SE", "CN", "PDS"]
+    "subjects": ["ADA", "SE", "CN", "PDS","PE","IPDC"]
   },
   {
     "id": 5,
@@ -62,7 +62,7 @@
       "absent": 2,
       "percentage": 95.6
     },
-    "subjects": ["ADA", "SE", "CN", "PDS"]
+    "subjects": ["ADA", "SE", "CN", "PDS","PE","IPDC"]
   },
   {
     "id": 6,
@@ -88,7 +88,7 @@
       "absent": 6,
       "percentage": 86.7
     },
-    "subjects": ["ADA", "SE", "CN", "PDS"]
+    "subjects": ["ADA", "SE", "CN", "PDS","PE","IPDC"]
   },
   {
     "id": 8,
@@ -101,6 +101,6 @@
       "absent": 0,
       "percentage": 100.0
     },
-    "subjects": ["ADA", "SE", "CN", "PDS"]
+    "subjects": ["ADA", "SE", "CN", "PDS","PE","IPDC"]
   }
 ]
